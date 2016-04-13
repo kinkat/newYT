@@ -4,6 +4,7 @@
     <acme-navbar creation-date="main.creationDate"></acme-navbar>
   </div>
 <input-directive></input-directive>
+
 <!--   <div class="jumbotron text-center">
     <h1>'Allo, 'Allo!</h1>
     <p class="lead">
@@ -17,13 +18,24 @@
       With ♥ thanks to the contributions of<acme-malarkey extra-values="['Yeoman', 'Gulp', 'Angular']"></acme-malarkey>
     </p>
   </div> -->
+      <!-- <iframe id="vid_frame" width="640" height="385" ng-src="{{main.trustSrc(video.id.videoId)}}"></iframe> -->
+      <iframe id="vid_frame" width="640" height="385" ng-src="{{main.videoIdToPlayOnFrame}}"></iframe>
 
-  <div class="col-md-6" ng-repeat="video in main.responseArray">
-  <iframe width="640" height="385" ng-src="{{main.trustSrc(video.id.videoId)}}"></iframe>
+{{main.videoIdToPlayOnFrame.id.videoId}}
+  <div class="vid-container" ng-repeat="video in main.responseArray">
+      <!-- <iframe id="vid_frame" width="640" height="385" ng-src="{{main.trustSrc(video.id.videoId)}}"></iframe> -->
+
+        <div class="thumb">
+        <img ng-click="main.playClickedVideo(video)" ng-src="{{main.trustTitle(video.snippet.thumbnails.medium.url)}}">
+      </div>
+      <div class="desc">
+       {{main.trustTitle(video.snippet.title)}}
+      </div>
+      
   </div>
 
-Try it yourself
-d  
+
+ 
   <div class="row">
     <div class="col-sm-6 col-md-4" ng-repeat="awesomeThing in main.awesomeThings | orderBy:'rank'">
       <div class="thumbnail">

@@ -5,17 +5,23 @@
 	.service('YouTubeSearchDataService', YouTubeSearchService);
 
 	function YouTubeSearchService(){
-		self = this;
-		self.searchNew = searchNew;
+		var vm = this;
+		vm.searchNew = searchNew;
+		vm.getBaseUrl = getBaseUrl;
 
-		var youTubeSearchData = {
-			url: "https://www.googleapis.com/youtube/v3/search?"
+		vm.youTubeSearchData = {
 		};
 
-		function searchNew (query){
-			youTubeSearchData.query = query;
-			return youTubeSearchData;
+		function getBaseUrl(param){
+			return "https://www.googleapis.com/youtube/v3/" + param;
 		}
+
+		function searchNew (param, query){ 
+			vm.youTubeSearchData.url = getBaseUrl(param);
+			vm.youTubeSearchData.query = query;
+			return vm.youTubeSearchData;
+		}
+
 	}
 
 
