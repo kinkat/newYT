@@ -4,6 +4,8 @@
 	angular.module('newYt')
 	.factory("YouTubeFactory", YouTubeFactory);
   	
+  	console.log("in ");
+  	
   	YouTubeFactory.$inject = ['$http','YouTubeSearchDataService'];
 
 		function YouTubeFactory($http, YouTubeSearchDataService) {
@@ -12,9 +14,7 @@
 			getNew: getNew
 		};
 		return objYT ;
-
 		///////////////////////////////////// FUNCTIONS
-
 		function initFactory(query) {
 			var youtubeSearchData = YouTubeSearchDataService.searchNew(query);
 
@@ -25,14 +25,12 @@
 
             });		
 		}
-
 		function getNew(query) {
 			if(!query){
 				query = "";
 			}
-			console.log("getNew function");
+
 			// return $http.get('https://www.googleapis.com/youtube/v3/search?key=AIzaSyDOp0oHNkQQ3Xozrqv9xRFfi2w3HU8oDx0&'+ query);
 		}
-
 	}
 })();

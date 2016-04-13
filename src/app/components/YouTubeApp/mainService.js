@@ -16,7 +16,6 @@
 			youTubeSearchData.query = query;
 			return youTubeSearchData;
 		}
-
 	}
 
 

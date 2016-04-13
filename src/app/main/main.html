@@ -18,6 +18,12 @@
     </p>
   </div> -->
 
+  <div class="col-md-6" ng-repeat="video in main.responseArray">
+  <iframe width="640" height="385" ng-src="{{main.trustSrc(video.id.videoId)}}"></iframe>
+  </div>
+
+Try it yourself
+d  
   <div class="row">
     <div class="col-sm-6 col-md-4" ng-repeat="awesomeThing in main.awesomeThings | orderBy:'rank'">
       <div class="thumbnail">

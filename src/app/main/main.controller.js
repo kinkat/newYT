@@ -6,7 +6,7 @@
     .controller('MainController', MainController);
 
   /** @ngInject */
-  function MainController(YouTubeFactory , $timeout, webDevTec, toastr) {
+  function MainController(YouTubeFactory, $timeout, webDevTec, toastr, $sce) {
 	 var vm = this;
 	    vm.searchInput = "";
 
@@ -17,22 +17,28 @@
 	    vm.showToastr = showToastr;
 	    vm.responseArray = [];
 
-	    // function activate() {
-	    //       console.log("YT API IS READY");
-	    // }
 	    function search(){
 
 	          YouTubeFactory.initFactory({
 	          part:"snippet",
 	          key: 'AIzaSyDOp0oHNkQQ3Xozrqv9xRFfi2w3HU8oDx0',
+	          maxResult: 10,
 	          q: vm.searchInput
 	          }).success(function(data){
-	            console.log(data);
+	      	        angular.forEach(data.items, function(data, index) {
+         				 vm.responseArray.push(data);
+        			});
+        			console.log(vm.responseArray);
 	          });
-	      console.log(vm.responseArray);
-
 
 	    }
+
+	    vm.trustSrc = function(src) {
+	    	console.log("jestem w funkcji trustSrc");
+
+	    	var link = 'https://www.youtube.com/embed/' + src;
+    		return $sce.trustAsResourceUrl(link);
+  		}
 
 	    function showToastr() {
 	      toastr.info('Fork <a href="https://github.com/Swiip/generator-gulp-angular" target="_blank"><b>generator-gulp-angular</b></a>');
