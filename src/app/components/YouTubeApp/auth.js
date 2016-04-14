@@ -1,70 +1,86 @@
-(function() {
+// The client ID is obtained from the Google Developers Console
+// at https://console.developers.google.com/.
+// If you run this code from a server other than http://localhost,
+// you need to register your own client ID.
 
-  // Retrieve your client ID from the Google Developers Console at
-  // https://console.developers.google.com/.
-  var OAUTH2_CLIENT_ID = 'YOUR_CLIENT_ID';
-  var OAUTH2_SCOPES = [
-    'https://www.googleapis.com/auth/yt-analytics.readonly',
-    'https://www.googleapis.com/auth/youtube.readonly'
-  ];
+// var OAUTH2_CLIENT_ID = '__YOUR_CLIENT_ID__';
 
-  // Upon loading, the Google APIs JS client automatically invokes this callback.
-  // See https://developers.google.com/api-client-library/javascript/features/authentication
-  window.onJSClientLoad = function() {
-    gapi.auth.init(function() {
-      window.setTimeout(checkAuth, 1);
-    });
-  };
+var subscriptionsArray = [];
 
-  // Attempt the immediate OAuth 2.0 client flow as soon as the page loads.
-  // If the currently logged-in Google Account has previously authorized
-  // the client specified as the OAUTH2_CLIENT_ID, then the authorization
-  // succeeds with no user intervention. Otherwise, it fails and the
-  // user interface that prompts for authorization needs to display.
-  function checkAuth() {
-    gapi.auth.authorize({
-      client_id: OAUTH2_CLIENT_ID,
-      scope: OAUTH2_SCOPES,
-      immediate: true
-    }, handleAuthResult);
-  }
+var OAUTH2_CLIENT_ID = '612748501974-u1vf3nnont10d4u6po1n17imrv7n8e5h.apps.googleusercontent.com';
 
-  // Handle the result of a gapi.auth.authorize() call.
-  function handleAuthResult(authResult) {
-    if (authResult) {
+var OAUTH2_SCOPES = [
+  'https://www.googleapis.com/auth/youtube'
+];
+
+// Upon loading, the Google APIs JS client automatically invokes this callback.
+googleApiClientReady = function() {
+  gapi.auth.init(function() {
+    window.setTimeout(checkAuth, 1);
+  });
+}
+// Attempt the immediate OAuth 2.0 client flow as soon as the page loads.
+// If the currently logged-in Google Account has previously authorized
+// the client specified as the OAUTH2_CLIENT_ID, then the authorization
+// succeeds with no user intervention. Otherwise, it fails and the
+// user interface that prompts for authorization needs to display.
+function checkAuth() {
+      //console.log("aasdasd");
+  gapi.auth.authorize({
+    client_id: OAUTH2_CLIENT_ID,
+    scope: OAUTH2_SCOPES,
+    immediate: false,
+      // output: "embed"
+  }, handleAuthResult);
+}
+
+// Handle the result of a gapi.auth.authorize() call.
+function handleAuthResult(authResult) {
+    //console.log("authorization", authResult);
+  if (authResult && !authResult.error) {
       // Authorization was successful. Hide authorization prompts and show
       // content that should be visible after authorization succeeds.
       $('.pre-auth').hide();
       $('.post-auth').show();
-
       loadAPIClientInterfaces();
-    } else {
-      // Authorization was unsuccessful. Show content related to prompting for
-      // authorization and hide content that should be visible if authorization
-      // succeeds.
-      $('.post-auth').hide();
-      $('.pre-auth').show();
-
-      // Make the #login-link clickable. Attempt a non-immediate OAuth 2.0
-      // client flow. The current function is called when that flow completes.
-      $('#login-link').click(function() {
-        gapi.auth.authorize({
-          client_id: OAUTH2_CLIENT_ID,
-          scope: OAUTH2_SCOPES,
-          immediate: false
+  } else {
+    // Make the #login-link clickable. Attempt a non-immediate OAuth 2.0
+    // client flow. The current function is called when that flow completes.
+    $('#login-link').click(function() {
+      gapi.auth.authorize({
+        client_id: OAUTH2_CLIENT_ID,
+        scope: OAUTH2_SCOPES,
+        immediate: false
         }, handleAuthResult);
-      });
-    }
+    });
   }
+}
 
-  // This helper method displays a message on the page.
-  function displayMessage(message) {
-    $('#message').text(message).show();
-  }
+// Load the client interfaces for the YouTube Analytics and Data APIs, which
+// are required to use the Google APIs JS client. More info is available at
+// http://code.google.com/p/google-api-javascript-client/wiki/GettingStarted#Loading_the_Client
+function loadAPIClientInterfaces() {
+  //console.log("interface");
+  gapi.client.load('youtube', 'v3', function() {
+    handleAPILoaded();
+  });
+}
 
-  // This helper method hides a previously displayed message on the page.
-  function hideMessage() {
-    $('#message').hide();
-  }
-  /* In later steps, add additional functions above this line. */
-})();
+function OnLoadGAPI() {
+  //console.log("gapi on load");
+  googleApiClientReady();
+}
+
+function handleAPILoaded () {
+
+  // console.log("handleAPILoaded");
+  // var request = gapi.client.youtube.subscriptions.list({
+  //   part: "snippet",
+  //   mine: true
+  // });
+  
+  // request.execute(function () { 
+  //     console.log(arguments);
+  // });
+
+}

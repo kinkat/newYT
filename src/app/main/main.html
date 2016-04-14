@@ -1,41 +1,35 @@
-<div class="container">
+<div class="container-fluid">
 
   <div>
     <acme-navbar creation-date="main.creationDate"></acme-navbar>
+    <subscriptions-directive></subscriptions-directive>
   </div>
-<input-directive></input-directive>
+  
+  <input-directive></input-directive>
 
-<!--   <div class="jumbotron text-center">
-    <h1>'Allo, 'Allo!</h1>
-    <p class="lead">
-      <img src="assets/images/yeoman.png" alt="I'm Yeoman"><br>
-      Always a pleasure scaffolding your apps.
-    </p>
-    <p class="animated infinite" ng-class="main.classAnimation">
-      <button type="button" class="btn btn-lg btn-success" ng-click="main.showToastr()">Splendid Toastr</button>
-    </p>
-    <p>
-      With ♥ thanks to the contributions of<acme-malarkey extra-values="['Yeoman', 'Gulp', 'Angular']"></acme-malarkey>
-    </p>
-  </div> -->
-      <!-- <iframe id="vid_frame" width="640" height="385" ng-src="{{main.trustSrc(video.id.videoId)}}"></iframe> -->
-      <iframe id="vid_frame" width="640" height="385" ng-src="{{main.videoIdToPlayOnFrame}}"></iframe>
+  <div class="post-auth"> LOGGED IN </div>
+  <div class="pre-auth"> Log IN 
+      <div id="login-link" class="pre-auth" >
+        This application requires access to your YouTube account.
+        Please <a ng-href="#/" ng-click="main.authorizeUserFunction()" id="login-link">authorize</a> to continue.
+      </div>
+  </div>
 
-{{main.videoIdToPlayOnFrame.id.videoId}}
-  <div class="vid-container" ng-repeat="video in main.responseArray">
-      <!-- <iframe id="vid_frame" width="640" height="385" ng-src="{{main.trustSrc(video.id.videoId)}}"></iframe> -->
-
-        <div class="thumb">
-        <img ng-click="main.playClickedVideo(video)" ng-src="{{main.trustTitle(video.snippet.thumbnails.medium.url)}}">
+  <div class="col-xs-8">
+         <iframe ng-show="main.showPlayer" id="vid_frame" width="640" height="385" ng-src="{{main.videoIdToPlayOnFrame}}"></iframe>
+  </div>
+  <div class="col-xs-4">
+    <div class="vid-container" ng-repeat="video in main.responseArray">
+      <div class="thumb">
+          <img ng-click="main.playClickedVideo(video)" ng-src="{{main.trustTitle(video.snippet.thumbnails.medium.url)}}">
       </div>
       <div class="desc">
-       {{main.trustTitle(video.snippet.title)}}
+          {{main.trustTitle(video.snippet.title)}}
       </div>
-      
+    </div>
   </div>
-
-
- 
+  </div> 
+  
   <div class="row">
     <div class="col-sm-6 col-md-4" ng-repeat="awesomeThing in main.awesomeThings | orderBy:'rank'">
       <div class="thumbnail">

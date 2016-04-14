@@ -21,7 +21,6 @@
 			vm.youTubeSearchData.query = query;
 			return vm.youTubeSearchData;
 		}
-
 	}
 
 

@@ -1,3 +1,5 @@
 <form name="inputForm" ng-submit="inputForm.$valid && main.search(searchInput)" novalidate>
-	<input class="search" ng-model="main.searchInput" type="text" placeholder="What needs to be search?" autofocus required >
+	<div class="form-group">
+    <input class="search" class="form-control" ng-model="main.searchInput" type="text" placeholder="Search here" autofocus required >
+    </div>
 </form >

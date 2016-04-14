@@ -16,6 +16,8 @@
 		///////////////////////////////////// FUNCTIONS
 		function inputSearch(query) {
 			var youtubeDataToSend = YouTubeSearchDataService.searchNew("search?", query);
+		
+		// console.log(gapi.client.youtube.list);
 
 			return $http({
                 method: 'GET',
@@ -26,7 +28,7 @@
             	console.log("data");
             });		
 		}
-		
+
 		function getSub(query) {
 			var youtubeDataToSend = YouTubeSearchDataService.searchNew("subscriptions?", query);
 

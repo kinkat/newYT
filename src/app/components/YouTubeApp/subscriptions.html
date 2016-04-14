@@ -1,0 +1,14 @@
+<div class="container-fluid">
+
+    <acme-navbar creation-date="main.creationDate"></acme-navbar>
+    <input-directive></input-directive>
+        SUBSCRIPTIONS
+    <button ng-click="main.showMySubscription()"> SHOW MY SUB </button>
+    <div class="row" ng-repeat="video in main.subscriptionsArray">
+        <div class="col-xs-3" ng-show="main.showChannels"> 
+       <td> <img ng-src="{{main.subscriptionsArray[$index].thumbnails.high.url}}" >
+        {{main.subscriptionsArray[$index].title}}
+       </td> </div>
+    </div>
+
+</div>
