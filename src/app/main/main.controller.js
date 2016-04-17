@@ -13,9 +13,10 @@
 
         vm.search = search;
         vm.awesomeThings = [];
-        vm.classAnimation = '';
+        vm.classAnimation = "";
         vm.creationDate = 1460374566702;
         vm.showToastr = showToastr;
+        vm.loggedUserName = "";
         vm.responseArray = [];
         vm.trustSrc = trustSrc;
         vm.trustTitle = trustTitle;
@@ -23,20 +24,37 @@
         vm.showMySubscription = showMySubscription;
         vm.videoIdToPlayOnFrame = "";
         vm.subscriptionsArray = [];
-        vm.showPlayer = false;
-        vm.showChannels = false;
-
+        
         vm.authorizeUserFunction = authorizeUserFunction;
+        vm.showPlayer = false;
+        vm.showChannels = true;
+        vm.logged = false;
+        vm.afterAuth = true; 
+        
+        vm.subscriptionsArray = YouTubeFactory.readCache();
+        vm.afterAuth = YouTubeFactory.readFlag();
+        
+        vm.yt = {
+            width: 600, 
+            height: 480, 
+            videoid: false,
+        };
+
+        // vm.showUserInformation = showUserInformation;
+        vm.idtest = "";
+        vm.player = {};
 
 	    function authorizeUserFunction(){
 	    	checkAuth();
+            vm.afterAuth = false;
+            YouTubeFactory.writeFlag(vm.afterAuth);
 	    }
 
         function search(){
             vm.responseArray = [];
             YouTubeFactory.inputSearch({
                 part:"snippet",
-                key: 'AIzaSyDOp0oHNkQQ3Xozrqv9xRFfi2w3HU8oDx0',
+                key: "AIzaSyDOp0oHNkQQ3Xozrqv9xRFfi2w3HU8oDx0",
                 maxResults: 10,
                 q: vm.searchInput
             })
@@ -48,9 +66,8 @@
             vm.showPlayer = false;
         }
 
+        function showMySubscription() {
 
-	    function showMySubscription() {
-	    	vm.subscriptionsArray = [];
             vm.showChannels = true;
 
             var request = gapi.client.youtube.subscriptions.list({
@@ -62,8 +79,25 @@
                 angular.forEach(data.items, function(items, index){
                     vm.subscriptionsArray.push(items.snippet);
                 })
-                    console.log(vm.subscriptionsArray);
+                console.log(vm.subscriptionsArray);
+                    YouTubeFactory.writeCache(vm.subscriptionsArray);
                 return vm.subscriptionsArray;
+            });
+        }
+
+        function showUserInformation(){
+            var request = gapi.client.youtube.channels.list({
+              // Setting the "mine" request parameter's value to "true" indicates that
+              // you want to retrieve the currently authenticated user's channel.
+              mine: true,
+              part: 'snippet'
+            });
+
+            request.execute(function (data) {  
+                angular.forEach(data.items, function(items, index){
+                    console.log(items.snippet.title);
+                })
+
             });
         }
 
@@ -77,8 +111,11 @@
         }
 
         function playClickedVideo(clickedVideo) {
+            vm.idtest = clickedVideo.id.videoId;
             vm.videoIdToPlayOnFrame = trustSrc(clickedVideo.id.videoId);
             vm.showPlayer = true;
+            vm.yt.videoid = vm.idtest;
+            // vm.player.loadVideoById(vm.idtest, 5, "large");
         }
 
         function showToastr() {

@@ -1,20 +1,17 @@
-// The client ID is obtained from the Google Developers Console
-// at https://console.developers.google.com/.
-// If you run this code from a server other than http://localhost,
-// you need to register your own client ID.
 
-// var OAUTH2_CLIENT_ID = '__YOUR_CLIENT_ID__';
 
-var subscriptionsArray = [];
 
+var apiKey = 'AIzaSyDOp0oHNkQQ3Xozrqv9xRFfi2w3HU8oDx0';
 var OAUTH2_CLIENT_ID = '612748501974-u1vf3nnont10d4u6po1n17imrv7n8e5h.apps.googleusercontent.com';
-
+var logged = false;
 var OAUTH2_SCOPES = [
   'https://www.googleapis.com/auth/youtube'
 ];
 
 // Upon loading, the Google APIs JS client automatically invokes this callback.
 googleApiClientReady = function() {
+  gapi.client.setApiKey(apiKey);
+
   gapi.auth.init(function() {
     window.setTimeout(checkAuth, 1);
   });
@@ -36,8 +33,9 @@ function checkAuth() {
 
 // Handle the result of a gapi.auth.authorize() call.
 function handleAuthResult(authResult) {
-    //console.log("authorization", authResult);
+    console.log("authorization", authResult);
   if (authResult && !authResult.error) {
+
       // Authorization was successful. Hide authorization prompts and show
       // content that should be visible after authorization succeeds.
       $('.pre-auth').hide();
@@ -46,13 +44,13 @@ function handleAuthResult(authResult) {
   } else {
     // Make the #login-link clickable. Attempt a non-immediate OAuth 2.0
     // client flow. The current function is called when that flow completes.
-    $('#login-link').click(function() {
+    // $('#login-link').click(function() {
       gapi.auth.authorize({
         client_id: OAUTH2_CLIENT_ID,
         scope: OAUTH2_SCOPES,
         immediate: false
         }, handleAuthResult);
-    });
+    // });
   }
 }
 
@@ -63,7 +61,7 @@ function loadAPIClientInterfaces() {
   //console.log("interface");
   gapi.client.load('youtube', 'v3', function() {
     handleAPILoaded();
-  });
+  })
 }
 
 function OnLoadGAPI() {
@@ -72,15 +70,5 @@ function OnLoadGAPI() {
 }
 
 function handleAPILoaded () {
-
-  // console.log("handleAPILoaded");
-  // var request = gapi.client.youtube.subscriptions.list({
-  //   part: "snippet",
-  //   mine: true
-  // });
-  
-  // request.execute(function () { 
-  //     console.log(arguments);
-  // });
 
 }

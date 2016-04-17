@@ -3,10 +3,10 @@
     <acme-navbar creation-date="main.creationDate"></acme-navbar>
     <input-directive></input-directive>
         SUBSCRIPTIONS
-    <button ng-click="main.showMySubscription()"> SHOW MY SUB </button>
-    <div class="row" ng-repeat="video in main.subscriptionsArray">
-        <div class="col-xs-3" ng-show="main.showChannels"> 
-       <td> <img ng-src="{{main.subscriptionsArray[$index].thumbnails.high.url}}" >
+    <button class="btn btn-danger" ng-click="main.showMySubscription()"> SHOW MY SUB </button>
+    <div class="row" >
+        <div class="col-md-3" ng-repeat="video in main.subscriptionsArray" ng-show="main.showChannels"> 
+       <td> <img ng-src="{{main.subscriptionsArray[$index].thumbnails.default.url}}" >
         {{main.subscriptionsArray[$index].title}}
        </td> </div>
     </div>

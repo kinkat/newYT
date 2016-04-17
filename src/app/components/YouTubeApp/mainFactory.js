@@ -5,11 +5,17 @@
 	.factory("YouTubeFactory", YouTubeFactory);
   	  	
   	YouTubeFactory.$inject = ['$http','YouTubeSearchDataService'];
-  		
+  		var tempCache = [];
+        var flagCache = true;
+
 		function YouTubeFactory($http, YouTubeSearchDataService) {
 		var objYT = {
 			inputSearch: inputSearch,
-			getSub: getSub
+			getSub: getSub,
+            writeCache:writeCache,
+            readCache:readCache,
+            readFlag: readFlag,
+            writeFlag: writeFlag
 		};
 		return objYT ;
 
@@ -39,5 +45,21 @@
 
             })
 		}
+
+        function readCache(){
+            return tempCache;
+        }
+
+        function writeCache(arr){
+            tempCache = arr;
+        }
+
+        function readFlag(){
+            return flagCache;
+        }
+
+        function writeFlag(flag){
+            flagCache = flag;
+        }
 	}
 })();

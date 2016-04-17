@@ -6,19 +6,21 @@
   </div>
   
   <input-directive></input-directive>
+<div class="hhh">
+  <script type="text/javascript"></script>
+   <youtube-player width="{{main.yt.width}}" height="{{main.yt.height}}" videoid="{{main.yt.videoid}}" ng-show="main.yt.videoid" class="col-md-8"></youtube-player>
+  
 
-  <div class="post-auth"> LOGGED IN </div>
+</div>
+  <!-- <div class="post-auth"> LOGGED IN as ...</div> -->
   <div class="pre-auth"> Log IN 
-      <div id="login-link" class="pre-auth" >
+      <div id="login-link" ng-show="main.afterAuth" class="pre-auth" >
         This application requires access to your YouTube account.
         Please <a ng-href="#/" ng-click="main.authorizeUserFunction()" id="login-link">authorize</a> to continue.
       </div>
   </div>
 
-  <div class="col-xs-8">
-         <iframe ng-show="main.showPlayer" id="vid_frame" width="640" height="385" ng-src="{{main.videoIdToPlayOnFrame}}"></iframe>
-  </div>
-  <div class="col-xs-4">
+  <div class="col-md-4">
     <div class="vid-container" ng-repeat="video in main.responseArray">
       <div class="thumb">
           <img ng-click="main.playClickedVideo(video)" ng-src="{{main.trustTitle(video.snippet.thumbnails.medium.url)}}">
