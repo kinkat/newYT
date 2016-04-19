@@ -2,25 +2,18 @@
     "use strict";
 
     angular.module("newYt")
-    .directive("youtubePlayer", function($window){
+    .directive("youtubePlayer", function($window, ytPlayerAPI){
+            var player;
         return{
             restrict: "E",
-            templateUrl: "app/components/YouTubeApp/youtube-player.html",
+            template: "<div id='ytplayer'></div>",
             scope: {
                   height:   "@",
                   width:    "@",
                   videoid:  "@"  
                 },
             link: function(scope, element, attrs) {
-                  var tag = document.createElement('script');
-                  tag.src = "https://www.youtube.com/iframe_api";
-                  var firstScriptTag = document.getElementsByTagName('script')[0];
-                  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-                console.log(attrs);
-                  var player;
-
-                  $window.onYouTubeIframeAPIReady = function() {
-
+                  
                     player = new YT.Player(element.children()[0], {
                       playerVars: {
                         autoplay: 1,
@@ -37,7 +30,7 @@
                       width: scope.width,
                       videoId: scope.videoid, 
                     });
-                  }
+                  
 
                   scope.$watch('videoid', function(newValue, oldValue) {
                     if (newValue == oldValue) {

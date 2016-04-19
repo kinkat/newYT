@@ -1,37 +1,36 @@
 <div class="container-fluid">
 
-  <div>
-    <acme-navbar creation-date="main.creationDate"></acme-navbar>
-    <subscriptions-directive></subscriptions-directive>
-  </div>
-  
-  <input-directive></input-directive>
-<div class="hhh">
-  <script type="text/javascript"></script>
-   <youtube-player width="{{main.yt.width}}" height="{{main.yt.height}}" videoid="{{main.yt.videoid}}" ng-show="main.yt.videoid" class="col-md-8"></youtube-player>
-  
-
-</div>
-  <!-- <div class="post-auth"> LOGGED IN as ...</div> -->
-  <div class="pre-auth"> Log IN 
-      <div id="login-link" ng-show="main.afterAuth" class="pre-auth" >
-        This application requires access to your YouTube account.
-        Please <a ng-href="#/" ng-click="main.authorizeUserFunction()" id="login-link">authorize</a> to continue.
-      </div>
-  </div>
-
-  <div class="col-md-4">
-    <div class="vid-container" ng-repeat="video in main.responseArray">
-      <div class="thumb">
-          <img ng-click="main.playClickedVideo(video)" ng-src="{{main.trustTitle(video.snippet.thumbnails.medium.url)}}">
-      </div>
-      <div class="desc">
-          {{main.trustTitle(video.snippet.title)}}
-      </div>
+    <div>
+      <acme-navbar creation-date="main.creationDate"></acme-navbar>
     </div>
-  </div>
-  </div> 
-  
+    
+    <youtube-player-container class="col-md-4"></youtube-player-container>
+    
+<input-directive></input-directive>
+    
+      <div class="row">
+        <div class="col-md-4">
+            <login-directive></login-directive>
+            <subscriptions-directive></subscriptions-directive>
+        </div>
+        <div class="col-md-8" >
+         <div class="row">
+           <div class="col-md-4" ng-repeat="video in main.responseArray" >
+             <div class="vid-container" >
+                <div class="thumb">
+                    <img ng-click="main.playClickedVideo(video)" ng-src="{{main.trustTitle(video.snippet.thumbnails.medium.url)}}">
+                </div>
+                <div class="desc">
+                    {{main.trustTitle(video.snippet.title)}}
+                </div>
+              </div>
+           </div>
+         </div>
+              
+          
+        </div>
+    </div>
+
   <div class="row">
     <div class="col-sm-6 col-md-4" ng-repeat="awesomeThing in main.awesomeThings | orderBy:'rank'">
       <div class="thumbnail">

@@ -5,8 +5,8 @@
 	.factory("YouTubeFactory", YouTubeFactory);
   	  	
   	YouTubeFactory.$inject = ['$http','YouTubeSearchDataService'];
-  		var tempCache = [];
-        var flagCache = true;
+  		var tempCache = [],
+            flagCache = true;
 
 		function YouTubeFactory($http, YouTubeSearchDataService) {
 		var objYT = {
@@ -23,8 +23,6 @@
 		function inputSearch(query) {
 			var youtubeDataToSend = YouTubeSearchDataService.searchNew("search?", query);
 		
-		// console.log(gapi.client.youtube.list);
-
 			return $http({
                 method: 'GET',
                 url: youtubeDataToSend.url ,

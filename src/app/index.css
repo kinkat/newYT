@@ -16,11 +16,15 @@
   width: 50px;
 }
 body {
-    background-color: #262124;
+    background-color: #0C090A;
     color: #FFFFFF;
 }
 
 .form-group input{
     color: #000;
     width: 59%;
+}
+
+.container > .navbar-header, .container-fluid > .navbar-header, .container > .navbar-collapse, .container-fluid > .navbar-collapse{
+  background: #e52d27;
 }

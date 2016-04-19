@@ -8,12 +8,13 @@
     function routeConfig($routeProvider) {
         $routeProvider
             .when('/', {
-                templateUrl: 'app/main/main.html',
+                templateUrl: 'app/main/main.html?onload=onYouTubeIframeAPIReady',
                 controller: 'MainController',
                 controllerAs: 'main'
             })
             .when('/subscriptions', {
-                templateUrl: 'app/components/YouTubeApp/subscriptions.html',
+                // templateUrl: 'app/components/YouTubeApp/subscriptions.html',
+                template: "<div> SUBSCRIPTIONS </div>",
                 controller: 'MainController',
                 controllerAs: 'main'
             })
@@ -27,5 +28,7 @@
               redirectTo: '/'
             });
     }
+
+
 
 })();

@@ -1,12 +1,11 @@
-
 (function(){
     "use strict";
 
     angular.module("newYt")
-    .directive("subscriptionsDirective", function(){
+    .directive("loginDirective", function(){
         return{
             restrict: "E",
-            templateUrl: "app/components/YouTubeApp/subscriptions.html"
+            templateUrl: "app/components/YouTubeApp/loginTemplate.html"
         };
     })
 

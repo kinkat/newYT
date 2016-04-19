@@ -1,0 +1,6 @@
+<div class="pre-auth" ng-if="!main.logged"> Log IN 
+    <div id="login-link" ng-show="main.afterAuth" class="pre-auth" >
+        This application requires access to your YouTube account.
+        Please <a ng-href="#/" ng-click="main.authorizeUserFunction()" id="login-link">authorize</a>   to continue.
+    
+</div>

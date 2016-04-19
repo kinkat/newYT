@@ -4,13 +4,12 @@
 
     angular
         .module('newYt')
-        .controller('MainController', MainController );
+        .controller('MainController', MainController )
 
   /** @ngInject */
-    function MainController (YouTubeFactory, toastr, $sce) {
+    function MainController (YouTubeFactory, toastr, $sce, $q, AuthService) {
         var vm = this;
         vm.searchInput = "";
-
         vm.search = search;
         vm.awesomeThings = [];
         vm.classAnimation = "";
@@ -24,18 +23,19 @@
         vm.showMySubscription = showMySubscription;
         vm.videoIdToPlayOnFrame = "";
         vm.subscriptionsArray = [];
-        
         vm.authorizeUserFunction = authorizeUserFunction;
         vm.showPlayer = false;
         vm.showChannels = true;
-        vm.logged = false;
-        vm.afterAuth = true; 
-        
+
+        vm.logged = arguments[4].logged;
+
+        vm.afterAuth = false; 
         vm.subscriptionsArray = YouTubeFactory.readCache();
-        vm.afterAuth = YouTubeFactory.readFlag();
         
+        vm.afterAuth = YouTubeFactory.readFlag();
+        vm.showChannelVideos = showChannelVideos;
         vm.yt = {
-            width: 600, 
+            width: 720, 
             height: 480, 
             videoid: false,
         };
@@ -43,15 +43,57 @@
         // vm.showUserInformation = showUserInformation;
         vm.idtest = "";
         vm.player = {};
+        function showChannelVideos(channel){
+            var channelTitle = channel.title;
+            var defered = $q.defer();
+
+            var request = gapi.client.youtube.channels.list({
+                part: "contentDetails",
+                forUsername: channelTitle,
+            });
+            request.execute(function (data) {  
+            	console.log(data);
+                var uploads = data.items[0].contentDetails.relatedPlaylists.uploads;
+                var request = gapi.client.youtube.playlistItems.list({
+                part: "snippet,contentDetails",
+                playlistId: uploads,
+                });
+
+                request.execute(function(videosFromChannel){
+                    vm.responseArray = videosFromChannel.items;
+                    // console.log("videos arr", vm.responseArray);
+
+                    YouTubeFactory.writeCache(vm.responseArray);
+                    defered.resolve(vm.responseArray);
+                })
+
+            });
+            defered.promise.then(function(data){
+                vm.responseArray = data;
+            })
+        }
 
 	    function authorizeUserFunction(){
-	    	checkAuth();
-            vm.afterAuth = false;
+	    	AuthService.checkAuth();
+            vm.afterAuth = true;
             YouTubeFactory.writeFlag(vm.afterAuth);
 	    }
 
         function search(){
             vm.responseArray = [];
+
+						// var request = gapi.client.youtube.search.list({
+						// part: "snippet,contentDetails",
+						// q: vm.searchInput,
+						// });
+
+						// request.execute(function(videosFromChannel){
+						//     vm.responseArray = videosFromChannel.items;
+						//     console.log("search arr", vm.responseArray);
+
+						//     // YouTubeFactory.writeCache(vm.responseArray);
+						//     // defered.resolve(vm.responseArray);
+						// })
             YouTubeFactory.inputSearch({
                 part:"snippet",
                 key: "AIzaSyDOp0oHNkQQ3Xozrqv9xRFfi2w3HU8oDx0",
@@ -59,17 +101,17 @@
                 q: vm.searchInput
             })
             .success(function (data) {
+            	console.log(data);
             	    angular.forEach(data.items, function(data, index) {
                         vm.responseArray.push(data);
-            	});
+            	   });
             })
             vm.showPlayer = false;
         }
 
         function showMySubscription() {
-
             vm.showChannels = true;
-
+            var defere = $q.defer();
             var request = gapi.client.youtube.subscriptions.list({
                 part: "snippet",
                 mine: true,
@@ -78,26 +120,23 @@
             request.execute(function (data) {  
                 angular.forEach(data.items, function(items, index){
                     vm.subscriptionsArray.push(items.snippet);
-                })
-                console.log(vm.subscriptionsArray);
-                    YouTubeFactory.writeCache(vm.subscriptionsArray);
-                return vm.subscriptionsArray;
+                    defere.resolve(vm.subscriptionsArray);
+                });
+                YouTubeFactory.writeCache(vm.subscriptionsArray); 
+            });
+            defere.promise.then(function(arr){
+                vm.subscriptionsArray = arr;
             });
         }
 
         function showUserInformation(){
             var request = gapi.client.youtube.channels.list({
-              // Setting the "mine" request parameter's value to "true" indicates that
-              // you want to retrieve the currently authenticated user's channel.
               mine: true,
               part: 'snippet'
             });
-
             request.execute(function (data) {  
                 angular.forEach(data.items, function(items, index){
-                    console.log(items.snippet.title);
                 })
-
             });
         }
 
@@ -111,11 +150,10 @@
         }
 
         function playClickedVideo(clickedVideo) {
-            vm.idtest = clickedVideo.id.videoId;
-            vm.videoIdToPlayOnFrame = trustSrc(clickedVideo.id.videoId);
+            // vm.videoIdToPlayOnFrame = trustSrc(clickedVideo.id.videoId);
             vm.showPlayer = true;
-            vm.yt.videoid = vm.idtest;
-            // vm.player.loadVideoById(vm.idtest, 5, "large");
+            vm.yt.videoid = clickedVideo.id.videoId;
+            console.log(vm.yt.videoid);
         }
 
         function showToastr() {

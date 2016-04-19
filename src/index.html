@@ -1,10 +1,14 @@
 <!doctype html>
 <html ng-app="newYt">
   <head>
+ 
     <meta charset="utf-8">
     <title>newYt</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+        <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="  612748501974-u1vf3nnont10d4u6po1n17imrv7n8e5h.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
     <!-- build:css({.tmp/serve,src}) styles/vendor.css -->
@@ -27,7 +31,7 @@
 
     <script src="https://apis.google.com/js/client.js"></script>
     <!-- <script src="https://www.youtube.com/iframe_api"></script> -->
-
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <div ng-view></div>
 
     <!-- build:js(src) scripts/vendor.js -->

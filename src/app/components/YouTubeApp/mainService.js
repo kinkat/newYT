@@ -9,8 +9,7 @@
 		vm.searchNew = searchNew;
 		vm.getBaseUrl = getBaseUrl;
 
-		vm.youTubeSearchData = {
-		};
+		vm.youTubeSearchData = {};
 
 		function getBaseUrl(param){
 			return "https://www.googleapis.com/youtube/v3/" + param;
