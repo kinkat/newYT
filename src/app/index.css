@@ -20,11 +20,28 @@ body {
     color: #FFFFFF;
 }
 
-.form-group input{
+/*.form-group input{
     color: #000;
     width: 59%;
-}
+}*/
 
 .container > .navbar-header, .container-fluid > .navbar-header, .container > .navbar-collapse, .container-fluid > .navbar-collapse{
   background: #e52d27;
+}
+
+.vid-container{
+  height: 250px;
+}
+
+.mythumb{
+  size:50px, 50px;
+}
+
+.jumbotron{
+  background: darkred;
+  margin-right: 35px;
+}
+
+.container-fluid > .navbar-collapse {
+    background: darkred;
 }

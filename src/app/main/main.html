@@ -1,47 +1,45 @@
 <div class="container-fluid">
-
-    <div>
-      <acme-navbar creation-date="main.creationDate"></acme-navbar>
-    </div>
-    
-    <youtube-player-container class="col-md-4"></youtube-player-container>
-    
-<input-directive></input-directive>
-    
-      <div class="row">
-        <div class="col-md-4">
-            <login-directive></login-directive>
-            <subscriptions-directive></subscriptions-directive>
-        </div>
-        <div class="col-md-8" >
-         <div class="row">
-           <div class="col-md-4" ng-repeat="video in main.responseArray" >
-             <div class="vid-container" >
-                <div class="thumb">
-                    <img ng-click="main.playClickedVideo(video)" ng-src="{{main.trustTitle(video.snippet.thumbnails.medium.url)}}">
-                </div>
-                <div class="desc">
-                    {{main.trustTitle(video.snippet.title)}}
-                </div>
-              </div>
-           </div>
-         </div>
-              
-          
-        </div>
-    </div>
-
+  <div>
+    <acme-navbar creation-date="main.creationDate"></acme-navbar>
+  </div>
+      
   <div class="row">
-    <div class="col-sm-6 col-md-4" ng-repeat="awesomeThing in main.awesomeThings | orderBy:'rank'">
-      <div class="thumbnail">
-        <img class="pull-right" ng-src="assets/images/{{ awesomeThing.logo }}" alt="{{ awesomeThing.title }}">
-        <div class="caption">
-          <h3>{{ awesomeThing.title }}</h3>
-          <p>{{ awesomeThing.description }}</p>
-          <p><a ng-href="{{awesomeThing.url}}">{{ awesomeThing.url }}</a></p>
+    <div class="col-md-3">
+      <div class="row">
+        <div class="col-md-12">
+        <input-directive></input-directive>
+        </div>
+        <div class="col-md-12">
+        <login-directive></login-directive>
+        </div>
+        <div class="col-md-12">
+        <subscriptions-directive></subscriptions-directive>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-md-9" >
+      <div class="row">
+        <div class="col-md-12" >
+          <youtube-player-container></youtube-player-container>
+        </div>
+      </div>
+      <div class="row jumbotron">
+        <div class="col-xs-6 col-lg-3"  ng-repeat="video in main.responseArray">
+          <div class="vid-container" >
+            <div class="thumb">
+                <img ng-click="main.playClickedVideo(video)" ng-src="{{main.trustTitle(video.snippet.thumbnails.medium.url)}}">
+            </div>
+            <div class="desc">
+              {{main.trustTitle(video.snippet.title)}}
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
 </div>
+      
+
+
+

@@ -23,8 +23,7 @@
             ytPlayerAPI.onReady()
                 .then(function(){
                     vm.apiReady = true;
-                    console.log("API IS READY");
-
+                // Player API is ready
                 });
         }
     }

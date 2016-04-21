@@ -1,14 +1,14 @@
-<div class="container-fluid">
-       SUBSCRIPTIONS
-    <button class="btn btn-danger" ng-click="main.showMySubscription()"> SHOW MY SUB </button>
+<div >
+    <br>
+    <button class="btn btn-danger" ng-show="main.loginStatus" ng-click="main.showMySubscription()"> SHOW MY SUB </button> 
     <div class="row" ng-repeat="channel in main.subscriptionsArray">
-        <div class="col-md-3" > 
-       <td> <img height="42" width="42" ng-src="{{main.subscriptionsArray[$index].thumbnails.default.url}}" 
-       ng-click="main.showChannelVideos(channel)">
+        <div ng-click="main.showChannelVideos(channel)"> 
+       <td> <img height="30" width="30" ng-src="{{main.subscriptionsArray[$index].thumbnails.default.url}}" 
+       > {{main.subscriptionsArray[$index].title}}
         </td> </div>
         <br>
     </div>
-    <div class="col-md-6" ng-repeat="channelVideos in main.channelVideosArray">
+    <div ng-repeat="channelVideos in main.channelVideosArray">
         <img ng-src="{{main.trustTitle(channelVideos.thumbnails)}}" ng-click="main.playClickedVideo(channelVideos)">
     </div>
 

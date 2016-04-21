@@ -1,7 +1,8 @@
-<div class="container-fluid">
-<form class="col-md-6" name="inputForm" ng-submit="inputForm.$valid && main.search(searchInput)" novalidate>
-	<div class="form-group">
-    <input class="search" class="form-control" ng-model="main.searchInput" type="text" placeholder="Search here" autofocus required >
-    </div>
-</form >
-</div>
+
+    <form name="inputForm" class="navbar-form navbar-left" role="search" ng-submit="inputForm.$valid && main.search(searchInput)" ng-focus "true" novalidate>
+    	<div class="form-group ">
+        <input class="form-control" ng-model="main.searchInput" type="text" placeholder="Search here" autofocus required >
+        </div>
+        <button type="submit" class="btn btn-default">OK</button>
+    </form >
+

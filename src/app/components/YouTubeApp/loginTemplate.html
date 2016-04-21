@@ -1,6 +1,9 @@
-<div class="pre-auth" ng-if="!main.logged"> Log IN 
-    <div id="login-link" ng-show="main.afterAuth" class="pre-auth" >
-        This application requires access to your YouTube account.
-        Please <a ng-href="#/" ng-click="main.authorizeUserFunction()" id="login-link">authorize</a>   to continue.
-    
+<div class="pre-auth" ng-if="!main.logged">  
+    <div id="login-link" ng-show="main.showLoginButton">
+        <a class="btn btn-danger" ng-click="main.authorizeUser()"> SIGN IN </a> to see your's subscriptions
+    </div>
+
+    <div id="login-link" ng-show="!main.showLoginButton">
+        <a class="btn btn-danger" ng-href='https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:3000'> SIGN OUT </a>
+    </div>
 </div>

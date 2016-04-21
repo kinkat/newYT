@@ -1,4 +1,6 @@
-<div class="row" ng-if="youtubeContainerCtrl.apiReady">
-   <youtube-player width="{{main.yt.width}}" height="{{main.yt.height}}" videoid="{{main.yt.videoid}}" ng-show="main.yt.videoid" class="col-md-8"></youtube-player>
+<div class="row" >
+    <div class="jumbotron" ng-show="main.yt.videoid" ng-if="youtubeContainerCtrl.apiReady">
+   <youtube-player class="embed-responsive embed-responsive-16by9" videoid="{{main.yt.videoid}}" ></youtube-player>
     <br>
+    </div>
 </div>
