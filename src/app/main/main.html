@@ -24,8 +24,8 @@
           <youtube-player-container></youtube-player-container>
         </div>
       </div>
-      <div class="row jumbotron">
-        <div class="col-xs-6 col-lg-3"  ng-repeat="video in main.responseArray">
+      <div ng-show="main." class="row jumbotron">
+        <div class="col-md-4"  ng-repeat="video in main.responseArray">
           <div class="vid-container" >
             <div class="thumb">
                 <img ng-click="main.playClickedVideo(video)" ng-src="{{main.trustTitle(video.snippet.thumbnails.medium.url)}}">

@@ -5,8 +5,10 @@
 	.factory("YouTubeFactory", YouTubeFactory);
   	  	
   	YouTubeFactory.$inject = ['$http','YouTubeSearchDataService'];
-  		var tempCache = [],
-            flagCache = true;
+  		var subChannelCache = [],
+            flagCache = true,
+            videosCache = [],
+            subscribedChannels = [];
 
 		function YouTubeFactory($http, YouTubeSearchDataService) {
 		var objYT = {
@@ -14,6 +16,10 @@
 			getSub: getSub,
             writeCache:writeCache,
             readCache:readCache,
+            readChannelCache:readChannelCache,
+            writeChannelCache:writeChannelCache,
+            showSubscribedChannel: showSubscribedChannel,
+            writeSubscribedChannel:writeSubscribedChannel,
             readFlag: readFlag,
             writeFlag: writeFlag
 		};
@@ -27,6 +33,7 @@
                 method: 'GET',
                 url: youtubeDataToSend.url ,
                 params: youtubeDataToSend.query,
+
 
             }).success(function(data){
             	console.log("data");
@@ -45,11 +52,27 @@
 		}
 
         function readCache(){
-            return tempCache;
+            return subChannelCache;
         }
 
         function writeCache(arr){
-            tempCache = arr;
+            subChannelCache = arr;
+        }
+
+        function readChannelCache(){
+            return videosCache;
+        }
+
+        function writeChannelCache(arr){
+            videosCache = arr;
+        }
+
+        function showSubscribedChannel(){
+            return subscribedChannels;
+        }
+
+        function writeSubscribedChannel(arr){
+            return subscribedChannels = arr;
         }
 
         function readFlag(){

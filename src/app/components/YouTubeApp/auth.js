@@ -5,7 +5,7 @@
   .service('AuthService', AuthService);
 
   function AuthService($q, $cookies, $timeout){
-    console.log("cookies", $cookies);
+    // console.log("cookies", $cookies);
 
     var vm = this,
         apiKey = 'AIzaSyDOp0oHNkQQ3Xozrqv9xRFfi2w3HU8oDx0',
@@ -25,7 +25,7 @@
     // Upon loading, the Google APIs JS client automatically invokes this callback.
     function initGapiClient()  {
       var defered = $q.defer();
-      console.log("gapi",gapi);
+      // console.log("gapi",gapi);
       gapi.client.setApiKey(apiKey);
 
       gapi.auth.init(function() {
@@ -98,7 +98,7 @@
             });
             request.execute(function (data) {  
                 vm.userName = data.items[0].snippet.title;
-                console.log(vm.userName);
+                // console.log(vm.userName);
             });
     }
 

@@ -8,13 +8,13 @@
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
       <ul class="nav navbar-nav">
-        <li class="active"><a ng-href="#/">Home</a></li>
-        <li><a ng-href="#/subscriptions" >Subscriptions</a></li>
-        <li><a ng-href="#/contact">Contact</a></li>
+        <li ng-class="{active: !!main.currentChannelId}"><a ng-href="#/">Home</a></li>
+        <li><a ng-class="{active: main.currentChannelId == 'subscriptions'}" ng-href="#/subscriptions" >Subscriptions</a></li>
+        <li><a ng-class="{active: !main.currentChannelId}" ng-href="#/contact">Contact</a></li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right acme-navbar-text">
-        <li>Logged as {{ vm.relativeDate }}.</li>
+        <li><!-- Logged as {{ vm.relativeDate }}. --></li>
       </ul>
     </div>
   </div>
