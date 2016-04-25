@@ -5,9 +5,13 @@
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
     window.OnLoadCallback = function () {
-        angular.element(document).ready(function() {
-            angular.bootstrap(document, ['newYt']);
+        gapi.client.load('youtube', 'v3', function() {
+            angular.element(document).ready(function() {
+                angular.bootstrap(document, ['newYt']);
+            });
         });
     }
 
 })();
+
+

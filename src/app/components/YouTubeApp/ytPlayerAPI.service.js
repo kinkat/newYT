@@ -19,14 +19,15 @@
 
             function activate(){
                 var tag = document.createElement('script');
-                          tag.src = "https://www.youtube.com/iframe_api";
-                          var firstScriptTag = document.getElementsByTagName('script')[0];
-                          firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-                          
-                          $window.onYouTubeIframeAPIReady = function() {
-                            apiReady.resolve();
-                            // API Loaded
-                          }
+                tag.src = "https://www.youtube.com/iframe_api";
+                var firstScriptTag = document.getElementsByTagName('script')[0];
+                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+                $window.onYouTubeIframeAPIReady = function() {
+                  apiReady.resolve();
+                  
+                  // API Loaded
+                }
             }
         }
 

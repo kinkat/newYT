@@ -1,3 +1,15 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,100,900);
+
+//colors
+$red: #E1332D;
+$white: #fff;
+* {
+  box-sizing: inherit;
+  transition-property: all;
+  transition-duration: .6s;
+  transition-timing-function: ease;
+}
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -48,14 +60,14 @@ a {
     background-color: darkred;
 }
 
-#dziabaj:hover{
+/*#dziabaj:hover{
   background: brown;
 }
 #dziabaj:focus {outline:0;}
 
 #dziabaj:active{
-  background: brown;
-}
+  background: white;
+}*/
 
 .ghost {
   background-color: transparent;
@@ -73,6 +85,81 @@ a {
 }
 
 .selected{
-  background: brown;
+  background: darkred;
+}
+
+.selectedVideo{
+  background: white;
+  color: darkred;
+}
+
+.btnz {
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  font-size:16px;
+  font-weight: 200;
+  line-height: 10px;
+  margin: 0 auto 1em;
+  max-width: 600px; 
+  position: relative;
+  text-decoration: none;
+  text-transform: uppercase;
+  vertical-align: middle;
+  width: 100%; 
   
+  @media(min-width: 50px) {
+    display: inline-block;
+    margin-right: 2.5em;
+  
+    &:nth-of-type(even) {
+      margin-right: 0;
+    }
+  }
+  
+  @media(min-width: 300px) {
+  
+    &:nth-of-type(even) {
+      margin-right: 2.5em;
+    }
+    
+    &:nth-of-type(5) {
+      margin-right: 0;
+    }
+    
+  }
+  
+  &:hover { text-decoration: none; }
+  
+}
+.btnz4 {
+  border: 0.5px solid;
+  overflow: hidden;
+  position: relative;
+  
+  span {
+    z-index: 20;
+  }
+  
+  &:after {
+    background: #fff;
+    content: "";
+    height: 155px;
+    left: -75px;
+    opacity: .2;
+    position: absolute;
+    top: -50px;
+    transform: rotate(35deg);
+    transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
+    width: 50px;
+    z-index: -10;
+  }
+}
+
+.btnz4:hover {
+  
+  &:after {
+    left: 120%;
+    transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
+  }
 }

@@ -16,7 +16,7 @@
     vm.initGapiClient = initGapiClient;
     vm.checkAuth = checkAuth;
     vm.handleAuthResult = handleAuthResult;
-    vm.loadAPIClientInterfaces = loadAPIClientInterfaces;
+    // vm.loadAPIClientInterfaces = loadAPIClientInterfaces;
     vm.handleAPILoaded = handleAPILoaded;
     vm.userInfo = userInfo; 
     vm.userName = "";
@@ -63,7 +63,7 @@
           $cookies.put("logged", true);
           // Authorization was successful. Hide authorization prompts and show
           // content that should be visible after authorization succeeds.
-          loadAPIClientInterfaces();
+          // loadAPIClientInterfaces();
           defered.resolve();
       } else {
           $cookies.remove("logged");
@@ -73,33 +73,25 @@
     // Load the client interfaces for the YouTube Analytics and Data APIs, which
     // are required to use the Google APIs JS client. More info is available at
     // http://code.google.com/p/google-api-javascript-client/wiki/GettingStarted#Loading_the_Client
-    function loadAPIClientInterfaces() {
-      gapi.client.load('youtube', 'v3', function() {
-        handleAPILoaded();
-      })
-    }
-
-    // function logOut(){
-    //   var auth2 = gapi.auth2.getAuthInstance();
-    //   auth2.signOut().then(function () {
-    //   console.log('User signed out.');
-    //   });
-    //   // gapi.auth.signOut();
+    // function loadAPIClientInterfaces() {
+    //   gapi.client.load('youtube', 'v3', function() {
+    //     handleAPILoaded();
+    //   })
     // }
 
     function userInfo(){
-      console.log("wykonano user info");
       return vm.userName;
     }
     function handleAPILoaded () {
-        var request = gapi.client.youtube.channels.list({
-              mine: true,
-              part: 'snippet'
-            });
-            request.execute(function (data) {  
-                vm.userName = data.items[0].snippet.title;
-                // console.log(vm.userName);
-            });
+
+        // var request = gapi.client.youtube.channels.list({
+        //       mine: true,
+        //       part: 'snippet'
+        //     });
+        //     request.execute(function (data) {  
+        //         vm.userName = data.items[0].snippet.title;
+        //         // console.log(vm.userName);
+        //     });
     }
 
   }
