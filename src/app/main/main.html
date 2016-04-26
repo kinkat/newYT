@@ -24,8 +24,12 @@
           <youtube-player-container></youtube-player-container>
         </div>
       </div>
+      <button ng-click='main.searchPrev()'>PREV</button>
 
-      <div class="row jumbotron">
+<button ng-click='main.searchNext()'>NEXT</button>
+
+      <div class="row jumbotron" infinite-scroll="main.searchNext()" infinite-scroll-disabled='main.busy'>
+<div >
         <div class="col-md-4" 
             
             ng-repeat="video in main.responseArray">
@@ -37,11 +41,15 @@
               {{main.trustTitle(video.snippet.title)}}
 
             </div>
-          </div> {{video.contentDetails.videoId}}
-          {{video.id.videoId}}
+          </div> 
         </div>
       </div>
+      
+      <div></div>
     </div>
+  
+  </div>
+  
   </div>
 </div>
       

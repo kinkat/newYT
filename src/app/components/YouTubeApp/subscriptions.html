@@ -1,7 +1,7 @@
 <div >
     <br>
     <button class="btn btn-danger" ng-if="main.loginStatus" ng-hide="main.subscriptionsArray.length" ng-click="main.showMySubscription()"> SHOW MY SUB </button> 
-    <div class="row" ng-repeat="channel in main.subscriptionsArray">
+    <div class="row" class="list-group-item" ng-repeat="channel in main.subscriptionsArray">
         <div class="btnz btnz4" ng-class="{selected: main.currentChannelId==main.subscriptionsArray[$index].title}" ng-click="main.showChannelVideos(channel)"> 
        <td> <img height="45" width="45" ng-src="{{main.subscriptionsArray[$index].thumbnails.default.url}}" 
        > {{main.subscriptionsArray[$index].title}}

@@ -13,11 +13,12 @@
         vm.saveVideos = saveVideos;
 
         function saveVideos(key, data){
+            console.log('arguments', arguments);
           obj[key] = data;
         }
 
         function getVideos(key) {
-          return obj[key];
+          return obj[key] || [];
         }
 
     }

@@ -10,20 +10,20 @@
 		var objYT = {
 			inputSearch: inputSearch,
 			getVideosFromChannel: getVideosFromChannel,
-            getMySubscriptions: getMySubscriptions
-
+            getMySubscriptions: getMySubscriptions,
 		};
 		return objYT ;
 
 		///////////////////////////////////// FUNCTIONS
-		function inputSearch(query) {
-
+		function inputSearch(query, pageToken) {
+            // console.log('LAST PAGE TOKEN: ', pageToken);
             var defere = $q.defer(),
                 request = gapi.client.youtube.search.list({
                     part: "snippet",
                     q: query,
-                    maxResults: 10,
-                    type: 'video'
+                    maxResults: 25,
+                    type: 'video',
+                    pageToken: pageToken
                 });
             request.execute(function (data) {
                 defere.resolve(data);
@@ -38,7 +38,7 @@
                 request = gapi.client.youtube.subscriptions.list({
                     part: "snippet",
                     mine: true,
-                    maxResults:10
+                    maxResults:12
                 });
             request.execute(function (data) {
                 angular.forEach(data.items, function(items){
@@ -62,7 +62,7 @@
                 var requestToExtractVideos = gapi.client.youtube.playlistItems.list({
                 part: "snippet,contentDetails",
                 playlistId: uploads,
-                maxResults:10
+                maxResults:25
                 });
                 requestToExtractVideos.execute(function(videosFromChannel){
                     defered.resolve(videosFromChannel.items);
@@ -70,8 +70,6 @@
             });
             return defered.promise;
         }
-
-
 
 	}
 })();

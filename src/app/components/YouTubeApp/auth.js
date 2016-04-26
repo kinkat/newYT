@@ -64,6 +64,7 @@
           // Authorization was successful. Hide authorization prompts and show
           // content that should be visible after authorization succeeds.
           // loadAPIClientInterfaces();
+          handleAPILoaded();
           defered.resolve();
       } else {
           $cookies.remove("logged");
@@ -73,6 +74,7 @@
     // Load the client interfaces for the YouTube Analytics and Data APIs, which
     // are required to use the Google APIs JS client. More info is available at
     // http://code.google.com/p/google-api-javascript-client/wiki/GettingStarted#Loading_the_Client
+    
     // function loadAPIClientInterfaces() {
     //   gapi.client.load('youtube', 'v3', function() {
     //     handleAPILoaded();
@@ -82,16 +84,16 @@
     function userInfo(){
       return vm.userName;
     }
+
     function handleAPILoaded () {
 
-        // var request = gapi.client.youtube.channels.list({
-        //       mine: true,
-        //       part: 'snippet'
-        //     });
-        //     request.execute(function (data) {  
-        //         vm.userName = data.items[0].snippet.title;
-        //         // console.log(vm.userName);
-        //     });
+        var request = gapi.client.youtube.channels.list({
+              mine: true,
+              part: 'snippet'
+            });
+        request.execute(function (data) {  
+            vm.userName = data.items[0].snippet.title;
+        });
     }
 
   }
