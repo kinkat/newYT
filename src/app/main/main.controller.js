@@ -22,10 +22,10 @@
         vm.loginStatus = false;
         vm.showPlayer = false;
         vm.currentChannelId = $routeParams.id;
-        vm.searchNext = searchNext;
-        vm.searchPrev = searchPrev;
-        vm.busy = false;
-
+        vm.getMoreData = getMoreData;
+        vm.busy = true;
+        vm.subscriptionsArray = [];
+        vm.getVideos = getVideos;
         vm.authorizeUser = authorizeUser;
         vm.playClickedVideo = playClickedVideo;
         vm.search = search;
@@ -43,19 +43,21 @@
 
         function init () {
 
-            vm.subscriptionsArray = cacheService.getVideos('mySub');
+            if(vm.subscriptionsArray.length === 0){
+                vm.subscriptionsArray = cacheService.getVideos('mySub');
+            }
             afterAuthorization(AuthService.initGapiClient());
-
             if(angular.isUndefined($routeParams.id)){
                 vm.responseArray = cacheService.getVideos('search');
-
             }else{
-                showChannelVideos($routeParams.id);
                 vm.responseArray = cacheService.getVideos($routeParams.id);
+                if(vm.responseArray.length === 0)
+                getVideos($routeParams.id);
             }           
         }
 
         function search(){
+            vm.busy = false;
             vm.responseArray = [];
 
             YouTubeFactory.inputSearch(vm.searchInput)
@@ -70,8 +72,7 @@
 
         }
 
-
-        function searchNext(){
+        function getMoreData(){
             vm.showPlayer = false;
             if (vm.busy) return;
             vm.busy = true;
@@ -94,27 +95,7 @@
 
         }
 
-        function searchPrev(){
-            vm.responseArray = [];
-            console.log('jestem w search next');
-                vm.nextPageToken = cacheService.getVideos('nextPage');
-                vm.prevPageToken = cacheService.getVideos('prevPage');
-
-            YouTubeFactory.inputSearch(vm.searchInput, vm.prevPageToken)
-                .then(function(data){
-                    vm.nextPageToken = cacheService.saveVideos('nextPage', data.nextPageToken)
-                    vm.prevPageToken = cacheService.saveVideos('prevPage', data.prevPageToken)
-                    vm.responseArray = data.items;
-                    cacheService.saveVideos('search', vm.responseArray);
-                })
-                .then(function(){
-                    $location.path('/');
-                });
-
-        }
-
         function showMySubscription() {
-            vm.subscriptionsArray = [];
             vm.showChannels = true;
 
             YouTubeFactory.getMySubscriptions()
@@ -131,14 +112,20 @@
         function showChannelVideos(channel){
             var channelTitle = channel.title ? channel.title : channel;
             vm.responseArray = [];
+            $location.path("/"+ channelTitle);
 
-            YouTubeFactory.getVideosFromChannel(channel)
+        }
+
+        function getVideos(channelTitle){
+            YouTubeFactory.getVideosFromChannel(channelTitle)
                 .then(function(data){
+                    var channelTitle = data[0].snippet.channelTitle;
                     vm.responseArray = data;
                     cacheService.saveVideos(channelTitle, data);
-                    $location.path("/"+ channelTitle);
+                    return channelTitle;
+                }).then(function(channelTitle){
+                    
                 });
-
         }
 
         function afterAuthorization (defered) {
@@ -146,7 +133,9 @@
             .then(function () {
                 vm.showLoginButton = false;
                 vm.loginStatus = true;
+                 // if(vm.subscriptionsArray.length){
                 showMySubscription();
+                    // }
             }, function () {
                 vm.showLoginButton = true;
                 vm.loginStatus = false;

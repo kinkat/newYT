@@ -11,7 +11,8 @@
   
         vm.getVideos = getVideos;
         vm.saveVideos = saveVideos;
-
+        vm.removeData = removeData;
+        
         function saveVideos(key, data){
             console.log('arguments', arguments);
           obj[key] = data;
@@ -19,6 +20,10 @@
 
         function getVideos(key) {
           return obj[key] || [];
+        }
+
+        function removeData(key){
+          obj[key] = [];
         }
 
     }

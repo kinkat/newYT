@@ -19,7 +19,7 @@
                       html5: 1,
                       theme: "light",
                       modesbranding: 0,
-                      color: "white",
+                      color: "red",
                       iv_load_policy: 3,
                       showinfo: 1,
                       controls: 1

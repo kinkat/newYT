@@ -16,12 +16,16 @@
 
 		///////////////////////////////////// FUNCTIONS
 		function inputSearch(query, pageToken) {
+            var defere = $q.defer();
             // console.log('LAST PAGE TOKEN: ', pageToken);
-            var defere = $q.defer(),
-                request = gapi.client.youtube.search.list({
+            if(query === ''){
+                return defere.reject();
+            }
+            
+            var request = gapi.client.youtube.search.list({
                     part: "snippet",
                     q: query,
-                    maxResults: 25,
+                    maxResults: 20,
                     type: 'video',
                     pageToken: pageToken
                 });
@@ -38,7 +42,7 @@
                 request = gapi.client.youtube.subscriptions.list({
                     part: "snippet",
                     mine: true,
-                    maxResults:12
+                    maxResults:15
                 });
             request.execute(function (data) {
                 angular.forEach(data.items, function(items){
@@ -58,15 +62,20 @@
                 forUsername: channelTitle
             });
             request.execute(function (data) {
-                var uploads = data.items[0].contentDetails.relatedPlaylists.uploads;
-                var requestToExtractVideos = gapi.client.youtube.playlistItems.list({
-                part: "snippet,contentDetails",
-                playlistId: uploads,
-                maxResults:25
-                });
-                requestToExtractVideos.execute(function(videosFromChannel){
-                    defered.resolve(videosFromChannel.items);
-                })
+                if(angular.isUndefined(data.items[0].contentDetails)){
+                    defered.reject();
+                    return;
+                }else{
+                    var uploads = data.items[0].contentDetails.relatedPlaylists.uploads;
+                    var requestToExtractVideos = gapi.client.youtube.playlistItems.list({
+                    part: "snippet,contentDetails",
+                    playlistId: uploads,
+                    maxResults:15
+                    });
+                    requestToExtractVideos.execute(function(videosFromChannel){
+                        defered.resolve(videosFromChannel.items);
+                    });
+                }
             });
             return defered.promise;
         }
