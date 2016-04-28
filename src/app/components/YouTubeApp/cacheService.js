@@ -14,7 +14,7 @@
         vm.removeData = removeData;
         
         function saveVideos(key, data){
-            console.log('arguments', arguments);
+            // console.log('arguments', arguments);
           obj[key] = data;
         }
 

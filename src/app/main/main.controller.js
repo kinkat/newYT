@@ -21,9 +21,11 @@
         vm.showLoginButton = false;
         vm.loginStatus = false;
         vm.showPlayer = false;
-        vm.currentChannelId = $routeParams.id;
+        vm.currentChannelTitle = $routeParams.query;
+
         vm.getMoreData = getMoreData;
-        vm.busy = true;
+
+        vm.busy = false;                                // przestaw na FALSE jestli wl
         vm.subscriptionsArray = [];
         vm.getVideos = getVideos;
         vm.authorizeUser = authorizeUser;
@@ -42,56 +44,88 @@
         init();
 
         function init () {
-
+            var page = $routeParams.page,
+                query= $routeParams.query;
+                
+            afterAuthorization(AuthService.initGapiClient());
             if(vm.subscriptionsArray.length === 0){
                 vm.subscriptionsArray = cacheService.getVideos('mySub');
+                // console.log(vm.subscriptionsArray);
             }
-            afterAuthorization(AuthService.initGapiClient());
-            if(angular.isUndefined($routeParams.id)){
-                vm.responseArray = cacheService.getVideos('search');
-            }else{
-                vm.responseArray = cacheService.getVideos($routeParams.id);
-                if(vm.responseArray.length === 0)
-                getVideos($routeParams.id);
-            }           
+
+            switch(page){
+                case 'search':
+                    vm.responseArray = cacheService.getVideos('search');
+                    break;
+                case 'subscriptions':
+                    vm.responseArray = cacheService.getVideos($routeParams.query);
+                    if(vm.responseArray.length === 0){
+                        vm.responseArray = getVideos(query);
+                    }
+                    break;
+                default:
+                    break;
+            }
+       
         }
 
         function search(){
-            vm.busy = false;
             vm.responseArray = [];
-
+            vm.busy = false;
             YouTubeFactory.inputSearch(vm.searchInput)
                 .then(function(data){
                     vm.nextPageToken = cacheService.saveVideos('nextPage', data.nextPageToken)
                     vm.responseArray = data.items;
-                    cacheService.saveVideos('search', vm.responseArray);
+                    cacheService.saveVideos('search', data.items);
                 })
                 .then(function(){
-                    $location.path('/');
+                    $location.path('/search/' + vm.searchInput);
                 });
 
         }
 
         function getMoreData(){
+            if (vm.busy) 
+                return;
             vm.showPlayer = false;
-            if (vm.busy) return;
-            vm.busy = true;
 
+            vm.busy = true;
+            var page = $routeParams.page,
+                query = $routeParams.query,
+                promise;
             vm.nextPageToken = cacheService.getVideos('nextPage');
             vm.prevPageToken = cacheService.getVideos('prevPage');
+            console.log('page przed switchem', page);
+            switch(page){
+                case 'search':
+                    console.log('search / next',vm.searchInput, vm.nextPageToken);
+                    promise = YouTubeFactory.inputSearch(query, vm.nextPageToken);
+                    break;
+                case 'subscriptions':
+                    promise = YouTubeFactory.getVideosFromChannel(query, vm.nextPageToken);            
+                    break;
+                default:
+                    break;
+            }
 
-            YouTubeFactory.inputSearch(vm.searchInput, vm.nextPageToken)
-                .then(function(data){
-                    vm.nextPageToken = cacheService.saveVideos('nextPage', data.nextPageToken);
-                    vm.prevPageToken = cacheService.saveVideos('prevPage', data.prevPageToken);
-                    angular.forEach(data.items, function(item){
-                        vm.responseArray.push(item);
-                    })
-                    cacheService.saveVideos('search', vm.responseArray);
+            console.log('PROMISE: ',promise, query, page);
+
+            promise.then(function(data){
+                console.log('CH_DATA :',data);
+                vm.nextPageToken = cacheService.saveVideos('nextPage', data.nextPageToken);
+                vm.prevPageToken = cacheService.saveVideos('prevPage', data.prevPageToken);
+                angular.forEach(data.items, function(item){
+                    if(angular.isUndefined(vm.responseArray)){
+                        vm.responseArray = [];
+                    }
+                    vm.responseArray.push(item);
                 })
-                .then(function(){
-                    vm.busy = false;
-                });
+                cacheService.saveVideos('search', vm.responseArray);
+            })
+            .then(function(){
+                console.log('zmieniam busy na false');
+                vm.busy = false;
+            });
 
         }
 
@@ -111,17 +145,22 @@
 
         function showChannelVideos(channel){
             var channelTitle = channel.title ? channel.title : channel;
-            vm.responseArray = [];
-            $location.path("/"+ channelTitle);
+
+            $location.path("/subscriptions/"+ channelTitle);
 
         }
 
         function getVideos(channelTitle){
+            var channelTitle = channelTitle.title ? channelTitle.title : channelTitle;
+            vm.nextPageToken = '';
+            cacheService.removeData('nextPage');
+            vm.responseArray =[];
             YouTubeFactory.getVideosFromChannel(channelTitle)
                 .then(function(data){
-                    var channelTitle = data[0].snippet.channelTitle;
-                    vm.responseArray = data;
-                    cacheService.saveVideos(channelTitle, data);
+                    vm.responseArray = data.items;
+                    vm.nextPageToken = data.nextPageToken;
+                    cacheService.saveVideos('nextPage', data.nextPageToken);
+                    cacheService.saveVideos(channelTitle, data.items);
                     return channelTitle;
                 }).then(function(channelTitle){
                     

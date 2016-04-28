@@ -1,17 +1,11 @@
-        
-<div class="list-group">
+<div class="list-group" >
     
-<!--     <button class="btn btn-danger" ng-if="main.loginStatus" ng-hide="main.subscriptionsArray.length" ng-click="main.showMySubscription()"> SHOW MY SUB </button>  -->
-    <div ng-repeat="channel in main.subscriptionsArray" class='list-group-item' ng-class="{selected: main.currentChannelId==main.subscriptionsArray[$index].title}" >
-        <div ng-click="main.showChannelVideos(channel)"> 
-       <td> <img height="45" width="45" ng-src="{{main.subscriptionsArray[$index].thumbnails.default.url}}" 
-       > {{main.subscriptionsArray[$index].title}}
-        </td> </div>
-        <br>
-    </div>
-    <div ng-repeat="channelVideos in main.channelVideosArray">
-        <img ng-src="{{main.trustTitle(channelVideos.thumbnails)}}" ng-click="main.playClickedVideo(channelVideos)">
-    </div>
+    <h3> Subscriptions </h3>
+    <subscriptions-item ng-class="{selected: test==subscription.title}" 
+        ng-repeat="subscription in subscriptions"
+        subscription="subscription"
+        class='list-group-item'>
+    </subscriptions-item>
 
 </div>
 
