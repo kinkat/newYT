@@ -25,7 +25,6 @@
 
                 $window.onYouTubeIframeAPIReady = function() {
                   apiReady.resolve();
-                  
                   // API Loaded
                 }
             }

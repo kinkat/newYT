@@ -18,7 +18,6 @@
     vm.handleAPILoaded = handleAPILoaded;
     vm.userInfo = userInfo; 
     vm.userName = "";
-
     // vm.loadAPIClientInterfaces = loadAPIClientInterfaces;
     // Upon loading, the Google APIs JS client automatically invokes this callback.
     function initGapiClient()  {
@@ -54,13 +53,10 @@
           defered.reject();
       }
     }
-    // Handle the result of a gapi.auth.authorize() call.
     function handleAuthResult(authResult, defered) {
 
       if (authResult && !authResult.error) {
           $cookies.put("logged", true);
-          // Authorization was successful. Hide authorization prompts and show
-          // content that should be visible after authorization succeeds.
           // loadAPIClientInterfaces();
           handleAPILoaded();
           defered.resolve();
@@ -69,10 +65,6 @@
           defered.reject();
       }     
     }
-    // Load the client interfaces for the YouTube Analytics and Data APIs, which
-    // are required to use the Google APIs JS client. More info is available at
-    // http://code.google.com/p/google-api-javascript-client/wiki/GettingStarted#Loading_the_Client
-    
     // function loadAPIClientInterfaces() {
     //   gapi.client.load('youtube', 'v3', function() {
     //     handleAPILoaded();

@@ -3,7 +3,7 @@
 
     angular.module('newYt')
     .factory("httpInterceptor", httpInterceptor)
-    .config(configInterceptor);
+    .config(config);
 
     httpInterceptor.$inject = ['$q', '$rootScope', '$log'];
 
@@ -13,7 +13,6 @@
             request: function (config) {
                 numLoadings++;
                 $rootScope.$broadcast("loader_show");
-                console.log('broadcast pokaz');
                 return config || $q.when(config)
             },
             response: function (response) {
@@ -31,7 +30,7 @@
         };
     }
 
-    function configInterceptor($httpProvider) {
+    function config($httpProvider) {
         $httpProvider.interceptors.push('httpInterceptor');
     }
 

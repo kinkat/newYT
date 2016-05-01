@@ -46,15 +46,11 @@
         function init () {
             var page = $routeParams.page,
                 query= $routeParams.query;
-            
-            var cachePromise;
-
             afterAuthorization(AuthService.initGapiClient());
             vm.subscriptionsArray = cacheService.getVideos('mySub');
 
             switch(page){
                 case 'search':
-
                     vm.responseArray = cacheService.getVideos('search');
                     vm.busy = false;
                     break;
@@ -95,13 +91,10 @@
                 return;
             }
             vm.busy = true;
-
             vm.showPlayer = false;
-
             var page = $routeParams.page,
                 query = $routeParams.query,
                 promise;
-
 
             vm.nextPageToken = cacheService.getVideos('nextPage');
             vm.prevPageToken = cacheService.getVideos('prevPage');
@@ -117,10 +110,7 @@
                         break;
                 }
 
-                console.log('PROMISE: ',promise, query, page);
-
                 promise.then(function(data){
-                    // console.log('CH_DATA :',data);
                     vm.nextPageToken = cacheService.saveVideos('nextPage', data.nextPageToken);
                     vm.prevPageToken = cacheService.saveVideos('prevPage', data.prevPageToken);
                     angular.forEach(data.items, function(item){
@@ -132,7 +122,6 @@
                     cacheService.saveVideos('search', vm.responseArray);
                 })
                 .then(function(){
-                    console.log('zmieniam busy na false');
                     vm.busy = false;
                 });
             // })
@@ -160,7 +149,6 @@
 
         function showChannelVideos(channel){
             var channelTitle = channel.title ? channel.title : channel;
-            // vm.busy = true;
             $location.path("/subscriptions/" + channelTitle);
 
         }
