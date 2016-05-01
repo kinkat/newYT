@@ -1,16 +1,15 @@
-(function(window){
+(function(){
 	"use strict";
 
 	angular.module('newYt')
 	.factory("YouTubeFactory", YouTubeFactory);
-  	  	
-  	YouTubeFactory.$inject = ['$http','$q'];
+    YouTubeFactory.$inject = ['$http','$q'];
 
 		function YouTubeFactory($http, $q) {
 		var objYT = {
 			inputSearch: inputSearch,
 			getVideosFromChannel: getVideosFromChannel,
-            getMySubscriptions: getMySubscriptions,
+            getMySubscriptions: getMySubscriptions
 		};
 		return objYT ;
 

@@ -2,7 +2,7 @@
     "use strict";
 
     angular.module("newYt")
-    .directive("youtubePlayer", function($window){
+    .directive("youtubePlayer", function(){
         var player;
         return{
             restrict: "E",

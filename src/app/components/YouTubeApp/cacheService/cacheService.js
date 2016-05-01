@@ -5,7 +5,7 @@
         .module('newYt')
         .service('cacheService', cacheService);
 
-    function cacheService($q) {
+    function cacheService() {
         var vm = this;
         var obj = {};
         

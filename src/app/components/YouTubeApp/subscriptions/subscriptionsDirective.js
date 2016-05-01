@@ -2,7 +2,7 @@
     "use strict";
 
     angular.module("newYt")
-        .directive("subscriptionsDirective", function (cacheService) {
+        .directive("subscriptionsDirective", function () {
         return {
                 replace: true,
                 restrict: "E",
@@ -19,8 +19,7 @@
                     vm.setActiveSubscription = function(subscription){
                         $scope.activeSubscription = subscription;
                     }
-                },
-
+                }
         };
     });
 

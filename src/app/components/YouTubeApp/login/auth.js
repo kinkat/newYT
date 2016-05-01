@@ -22,7 +22,6 @@
     // Upon loading, the Google APIs JS client automatically invokes this callback.
     function initGapiClient()  {
         var defered = $q.defer();
-        // console.log("gapi",gapi);
         gapi.client.setApiKey(apiKey);
 
         gapi.auth.init(function() {

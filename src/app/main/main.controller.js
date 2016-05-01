@@ -9,7 +9,7 @@
         MainController.$inject = ['YouTubeFactory', 'toastr', '$sce', '$q', 'AuthService', '$anchorScroll', '$log', '$window','$routeParams','$location','cacheService','$scope'];
 
   /** @ngInject */
-    function MainController(YouTubeFactory, toastr, $sce, $q, AuthService, $anchorScroll, $log, $window, $routeParams, $location, cacheService, $scope) {
+    function MainController(YouTubeFactory, toastr, $sce, $q, AuthService, $anchorScroll, $log, $window, $routeParams, $location, cacheService) {
         var vm = this;
         vm.awesomeThings = [];
         vm.classAnimation = "";
@@ -154,7 +154,7 @@
         }
 
         function getChannelVideos(channelTitle){
-            var channelTitle = channelTitle.title ? channelTitle.title : channelTitle;
+            channelTitle = channelTitle.title ? channelTitle.title : channelTitle;
             vm.nextPageToken = '';
             cacheService.removeData('nextPage');
             vm.responseArray = [];

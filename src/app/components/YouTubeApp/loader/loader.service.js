@@ -1,13 +1,13 @@
-(function(window){
+(function(){
     "use strict";
 
     angular.module('newYt')
     .factory("httpInterceptor", httpInterceptor)
     .config(config);
 
-    httpInterceptor.$inject = ['$q', '$rootScope', '$log'];
+    httpInterceptor.$inject = ['$q', '$rootScope'];
 
-    function httpInterceptor($q, $rootScope, $log){
+    function httpInterceptor($q, $rootScope){
         var numLoadings = 0;
         return {
             request: function (config) {
