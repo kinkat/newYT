@@ -6,7 +6,7 @@
         return {
                 replace: true,
                 restrict: "E",
-                templateUrl: "app/components/YouTubeApp/subscriptions.html",
+                templateUrl: "app/components/YouTubeApp/subscriptions/subscriptions.html",
                 scope:{
                     test: "=",
                     subscriptions: "="
@@ -20,12 +20,7 @@
                         $scope.activeSubscription = subscription;
                     }
                 },
-                link: function(scope, element, attrs, ctrl){
-                    // scope.$watch('selectedChannelTitle', function(selectedChannelTitle) {
-                    //     console.log(selectedChannelTitle);
-                    //     ctrl.setActiveSubscription(selectedChannelTitle);
-                    // });
-                }
+
         };
     });
 

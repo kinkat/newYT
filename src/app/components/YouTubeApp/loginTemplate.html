@@ -1,8 +1,0 @@
-<div class="pre-auth" ng-if="!main.logged">  
-    <div id="login-link" ng-show="main.showLoginButton">
-        <a class="btn btn-danger" ng-click="main.authorizeUser()"> LOG IN </a> to see your's subscriptions
-    </div>
-    <div id="login-link" ng-show="!main.showLoginButton">
-        <a class="btn btn-danger" ng-href='https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:3000'> LOG OUT </a> Hello {{main.loggedUserName}}!
-    </div>
-</div>

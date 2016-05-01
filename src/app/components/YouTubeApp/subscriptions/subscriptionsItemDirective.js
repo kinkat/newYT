@@ -5,14 +5,13 @@
         .directive("subscriptionsItem", function () {
         return {
                 restrict: "E",
-                templateUrl: "app/components/YouTubeApp/subscriptions-item.html",
+                templateUrl: "app/components/YouTubeApp/subscriptions/subscriptions-item.html",
     
                 scope:{
                     subscription: "="
                 },
                 require: "^subscriptionsDirective",
                 link: function(scope, element, attrs, subCtrl){
-                    // console.log(subCtrl.getActiveSubscription());
 
                     scope.makeActive = function(){
                         subCtrl.setActiveSubscription(scope.subscription);

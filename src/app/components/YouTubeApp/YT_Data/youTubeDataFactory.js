@@ -4,9 +4,9 @@
 	angular.module('newYt')
 	.factory("YouTubeFactory", YouTubeFactory);
   	  	
-  	YouTubeFactory.$inject = ['$http','YouTubeSearchDataService','$q'];
+  	YouTubeFactory.$inject = ['$http','$q'];
 
-		function YouTubeFactory($http, YouTubeSearchDataService, $q) {
+		function YouTubeFactory($http, $q) {
 		var objYT = {
 			inputSearch: inputSearch,
 			getVideosFromChannel: getVideosFromChannel,
@@ -17,7 +17,6 @@
 		///////////////////////////////////// FUNCTIONS
 		function inputSearch(query, pageToken) {
             var defere = $q.defer();
-            // console.log('LAST PAGE TOKEN: ', pageToken);
             if(query === ''){
                 defere.reject();
             } else {            

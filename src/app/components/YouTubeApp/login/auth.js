@@ -5,7 +5,6 @@
   .service('AuthService', AuthService);
 
   function AuthService($q, $cookies, $timeout){
-    // console.log("cookies", $cookies);
 
     var vm = this,
         apiKey = 'AIzaSyDOp0oHNkQQ3Xozrqv9xRFfi2w3HU8oDx0',
@@ -16,24 +15,23 @@
     vm.initGapiClient = initGapiClient;
     vm.checkAuth = checkAuth;
     vm.handleAuthResult = handleAuthResult;
-    // vm.loadAPIClientInterfaces = loadAPIClientInterfaces;
     vm.handleAPILoaded = handleAPILoaded;
     vm.userInfo = userInfo; 
     vm.userName = "";
-    // vm.logOut = logOut;
 
+    // vm.loadAPIClientInterfaces = loadAPIClientInterfaces;
     // Upon loading, the Google APIs JS client automatically invokes this callback.
     function initGapiClient()  {
-      var defered = $q.defer();
-      // console.log("gapi",gapi);
-      gapi.client.setApiKey(apiKey);
+        var defered = $q.defer();
+        // console.log("gapi",gapi);
+        gapi.client.setApiKey(apiKey);
 
-      gapi.auth.init(function() {
-        $timeout(function () {
-          checkAuth(defered);
-        }, 1);
-      });
-      return defered.promise;
+        gapi.auth.init(function() {
+            $timeout(function () {
+              checkAuth(defered);
+            }, 1);
+        });
+        return defered.promise;
     }
     // Attempt the immediate OAuth 2.0 client flow as soon as the page loads.
     // If the currently logged-in Google Account has previously authorized
@@ -44,16 +42,16 @@
       var immediate = !!$cookies.get("logged");
 
       if (immediate || force) {
-        gapi.auth.authorize({
-          client_id: OAUTH2_CLIENT_ID,
-          scope: OAUTH2_SCOPES,
-          immediate: immediate,
-          cookie_policy: 'single_host_origin'
-        }, function (authResult) {
-          handleAuthResult(authResult, defered);
-        });        
+          gapi.auth.authorize({
+              client_id: OAUTH2_CLIENT_ID,
+              scope: OAUTH2_SCOPES,
+              immediate: immediate,
+              cookie_policy: 'single_host_origin'
+          }, function (authResult) {
+              handleAuthResult(authResult, defered);
+          });        
       } else {
-        defered.reject();
+          defered.reject();
       }
     }
     // Handle the result of a gapi.auth.authorize() call.
@@ -82,18 +80,21 @@
     // }
 
     function userInfo(){
-      return vm.userName;
+        return vm.userName;
     }
 
     function handleAPILoaded () {
-
-        var request = gapi.client.youtube.channels.list({
-              mine: true,
-              part: 'snippet'
+        if(!vm.userName){
+            var request = gapi.client.youtube.channels.list({
+                mine: true,
+                part: 'snippet'
             });
-        request.execute(function (data) {  
-            vm.userName = data.items[0].snippet.title;
-        });
+            request.execute(function (data) {  
+                vm.userName = data.items[0].snippet.title;
+            });
+        }else{
+          return;
+        }
     }
 
   }

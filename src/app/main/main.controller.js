@@ -6,10 +6,10 @@
         .module('newYt')
         .controller('MainController', MainController);
 
-        MainController.$inject = ['YouTubeFactory', 'toastr', '$sce', '$q', 'AuthService', '$anchorScroll', '$log', '$window','$routeParams','$location','cacheService'];
+        MainController.$inject = ['YouTubeFactory', 'toastr', '$sce', '$q', 'AuthService', '$anchorScroll', '$log', '$window','$routeParams','$location','cacheService','$scope'];
 
   /** @ngInject */
-    function MainController(YouTubeFactory, toastr, $sce, $q, AuthService, $anchorScroll, $log, $window, $routeParams, $location, cacheService) {
+    function MainController(YouTubeFactory, toastr, $sce, $q, AuthService, $anchorScroll, $log, $window, $routeParams, $location, cacheService, $scope) {
         var vm = this;
         vm.awesomeThings = [];
         vm.classAnimation = "";
@@ -25,9 +25,9 @@
 
         vm.getMoreData = getMoreData;
 
-        vm.busy = false;                                // przestaw na FALSE jestli wl
+        vm.busy = true;
         vm.subscriptionsArray = [];
-        vm.getVideos = getVideos;
+        vm.getChannelVideos = getChannelVideos;
         vm.authorizeUser = authorizeUser;
         vm.playClickedVideo = playClickedVideo;
         vm.search = search;
@@ -37,7 +37,7 @@
         vm.trustTitle = trustTitle;
         vm.showChannelVideos = showChannelVideos;
         vm.yt = {
-          videoid: false
+            videoid: false
         };
         vm.nextPageToken = '';
         vm.prevPageToken  = '';
@@ -46,22 +46,28 @@
         function init () {
             var page = $routeParams.page,
                 query= $routeParams.query;
-                
+            
+            var cachePromise;
+
             afterAuthorization(AuthService.initGapiClient());
-            if(vm.subscriptionsArray.length === 0){
-                vm.subscriptionsArray = cacheService.getVideos('mySub');
-                // console.log(vm.subscriptionsArray);
-            }
+            vm.subscriptionsArray = cacheService.getVideos('mySub');
 
             switch(page){
                 case 'search':
+
                     vm.responseArray = cacheService.getVideos('search');
+                    vm.busy = false;
                     break;
+
                 case 'subscriptions':
                     vm.responseArray = cacheService.getVideos($routeParams.query);
+                    vm.busy = false;
+                    // vm.responseArray = cacheService.getVideos($routeParams.query);
                     if(vm.responseArray.length === 0){
-                        vm.responseArray = getVideos(query);
+                        vm.busy = true;
+                        getChannelVideos(query);
                     }
+
                     break;
                 default:
                     break;
@@ -71,7 +77,6 @@
 
         function search(){
             vm.responseArray = [];
-            vm.busy = false;
             YouTubeFactory.inputSearch(vm.searchInput)
                 .then(function(data){
                     vm.nextPageToken = cacheService.saveVideos('nextPage', data.nextPageToken)
@@ -79,92 +84,103 @@
                     cacheService.saveVideos('search', data.items);
                 })
                 .then(function(){
+                    vm.busy = false;
                     $location.path('/search/' + vm.searchInput);
                 });
 
         }
 
         function getMoreData(){
-            if (vm.busy) 
+            if (vm.busy) {
                 return;
+            }
+            vm.busy = true;
+
             vm.showPlayer = false;
 
-            vm.busy = true;
             var page = $routeParams.page,
                 query = $routeParams.query,
                 promise;
+
+
             vm.nextPageToken = cacheService.getVideos('nextPage');
             vm.prevPageToken = cacheService.getVideos('prevPage');
-            console.log('page przed switchem', page);
-            switch(page){
-                case 'search':
-                    console.log('search / next',vm.searchInput, vm.nextPageToken);
-                    promise = YouTubeFactory.inputSearch(query, vm.nextPageToken);
-                    break;
-                case 'subscriptions':
-                    promise = YouTubeFactory.getVideosFromChannel(query, vm.nextPageToken);            
-                    break;
-                default:
-                    break;
-            }
 
-            console.log('PROMISE: ',promise, query, page);
+                switch(page){
+                    case 'search':
+                        promise = YouTubeFactory.inputSearch(query, vm.nextPageToken);
+                        break;
+                    case 'subscriptions':
+                        promise = YouTubeFactory.getVideosFromChannel(query, vm.nextPageToken);            
+                        break;
+                    default:
+                        break;
+                }
 
-            promise.then(function(data){
-                console.log('CH_DATA :',data);
-                vm.nextPageToken = cacheService.saveVideos('nextPage', data.nextPageToken);
-                vm.prevPageToken = cacheService.saveVideos('prevPage', data.prevPageToken);
-                angular.forEach(data.items, function(item){
-                    if(angular.isUndefined(vm.responseArray)){
-                        vm.responseArray = [];
-                    }
-                    vm.responseArray.push(item);
+                console.log('PROMISE: ',promise, query, page);
+
+                promise.then(function(data){
+                    // console.log('CH_DATA :',data);
+                    vm.nextPageToken = cacheService.saveVideos('nextPage', data.nextPageToken);
+                    vm.prevPageToken = cacheService.saveVideos('prevPage', data.prevPageToken);
+                    angular.forEach(data.items, function(item){
+                        if(angular.isUndefined(vm.responseArray)){
+                            vm.responseArray = [];
+                        }
+                        vm.responseArray.push(item);
+                    })
+                    cacheService.saveVideos('search', vm.responseArray);
                 })
-                cacheService.saveVideos('search', vm.responseArray);
-            })
-            .then(function(){
-                console.log('zmieniam busy na false');
-                vm.busy = false;
-            });
+                .then(function(){
+                    console.log('zmieniam busy na false');
+                    vm.busy = false;
+                });
+            // })
+
+            
 
         }
 
         function showMySubscription() {
             vm.showChannels = true;
-
-            YouTubeFactory.getMySubscriptions()
-                .then(function(data){
-                    vm.subscriptionsArray = data;
-                    cacheService.saveVideos('mySub', data);
-                        
-                })
-                .then(function(){
-                    vm.loggedUserName = AuthService.userInfo();
-                });
+            
+            if(!vm.subscriptionsArray.length){
+                YouTubeFactory.getMySubscriptions()
+                    .then(function(data){
+                        vm.subscriptionsArray = data;
+                        cacheService.saveVideos('mySub', data);
+                    })
+                    .then(function(){
+                        vm.loggedUserName = AuthService.userInfo();
+                    });
+            }else{
+                return ;
+            }
         }
 
         function showChannelVideos(channel){
             var channelTitle = channel.title ? channel.title : channel;
-
-            $location.path("/subscriptions/"+ channelTitle);
+            // vm.busy = true;
+            $location.path("/subscriptions/" + channelTitle);
 
         }
 
-        function getVideos(channelTitle){
+        function getChannelVideos(channelTitle){
             var channelTitle = channelTitle.title ? channelTitle.title : channelTitle;
             vm.nextPageToken = '';
             cacheService.removeData('nextPage');
-            vm.responseArray =[];
+            vm.responseArray = [];
+
             YouTubeFactory.getVideosFromChannel(channelTitle)
                 .then(function(data){
                     vm.responseArray = data.items;
                     vm.nextPageToken = data.nextPageToken;
                     cacheService.saveVideos('nextPage', data.nextPageToken);
                     cacheService.saveVideos(channelTitle, data.items);
-                    return channelTitle;
-                }).then(function(channelTitle){
-                    
-                });
+
+                }).then(function(){
+                    vm.busy = false;
+                })
         }
 
         function afterAuthorization (defered) {
@@ -172,9 +188,7 @@
             .then(function () {
                 vm.showLoginButton = false;
                 vm.loginStatus = true;
-                 // if(vm.subscriptionsArray.length){
                 showMySubscription();
-                    // }
             }, function () {
                 vm.showLoginButton = true;
                 vm.loginStatus = false;

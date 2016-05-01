@@ -5,7 +5,7 @@
     .directive("loginDirective", function(){
         return{
             restrict: "E",
-            templateUrl: "app/components/YouTubeApp/loginTemplate.html"
+            templateUrl: "app/components/YouTubeApp/login/loginTemplate.html"
         };
     })
 

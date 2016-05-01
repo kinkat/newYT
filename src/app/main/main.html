@@ -1,8 +1,7 @@
 <div class="container-fluid">
   <div>
     <acme-navbar creation-date="main.creationDate"></acme-navbar>
-  </div>
-      
+  </div>      
   <div class="row">
       <div class="col-md-3" >
         <div class="row">
@@ -13,35 +12,38 @@
           <login-directive></login-directive>
           </div>
           <div class="col-md-12">
+
           <subscriptions-directive subscriptions="main.subscriptionsArray" test="main.currentChannelTitle"></subscriptions-directive>
           </div>
         </div>
       </div>
-  
+
       <div class="col-md-9" >
           <div class="row">
+                  <div loader ></div>
+
             <div class="col-md-12" >
               <youtube-player-container></youtube-player-container>
             </div>
           </div>
 
-          <div class="row jumbotron" infinite-scroll="main.getMoreData()" infinite-scroll-disabled='main.busy'>
+          <div class="row jumbotron" infinite-scroll="main.getMoreData()" infinite-scroll-disabled='main.busy'> 
             <div >
-              <div class="col-md-4" 
-                  
+              <div class="col-md-4"
                   ng-repeat="video in main.responseArray">
                 <div  class="vid-container">
                     <div class="thumb">
                         <img ng-class="{selectedVideo: main.yt.videoid == video.contentDetails.videoId}"  ng-click="main.playClickedVideo(video)" ng-src="{{main.trustTitle(video.snippet.thumbnails.medium.url)}}">
                     </div>
-                    <div   class="desc">
+                    <div class="desc">
                       {{main.trustTitle(video.snippet.title)}}
-
                     </div>
                 </div> 
               </div>
             </div>
         </div>
+                  <div loader></div>
+
       </div>
   </div>
 </div>

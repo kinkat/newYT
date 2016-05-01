@@ -11,7 +11,7 @@
 
         return {
             restrict: "E",
-            templateUrl: '/app/components/YouTubeApp/player-container.html',
+            templateUrl: '/app/components/YouTubeApp/YT_Player/player-container.html',
             controller: youtubeContainerController,
             controllerAs: 'youtubeContainerCtrl'
         }
