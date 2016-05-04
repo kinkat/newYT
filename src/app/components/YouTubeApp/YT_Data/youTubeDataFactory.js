@@ -1,3 +1,5 @@
+/*global gapi */
+
 (function(){
 	"use strict";
 

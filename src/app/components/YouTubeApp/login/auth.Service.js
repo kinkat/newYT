@@ -1,6 +1,6 @@
+/*global gapi */
 (function(){
   "use strict";
-
   angular.module('newYt')
   .service('AuthService', AuthService);
 
@@ -18,7 +18,6 @@
     vm.handleAPILoaded = handleAPILoaded;
     vm.userInfo = userInfo; 
     vm.userName = "";
-    // vm.loadAPIClientInterfaces = loadAPIClientInterfaces;
     // Upon loading, the Google APIs JS client automatically invokes this callback.
     function initGapiClient()  {
         var defered = $q.defer();
@@ -56,7 +55,6 @@
 
       if (authResult && !authResult.error) {
           $cookies.put("logged", true);
-          // loadAPIClientInterfaces();
           handleAPILoaded();
           defered.resolve();
       } else {
@@ -64,11 +62,6 @@
           defered.reject();
       }     
     }
-    // function loadAPIClientInterfaces() {
-    //   gapi.client.load('youtube', 'v3', function() {
-    //     handleAPILoaded();
-    //   })
-    // }
 
     function userInfo(){
         return vm.userName;

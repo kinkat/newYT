@@ -1,3 +1,5 @@
+/*global YT */
+
 (function(){
     "use strict";
 

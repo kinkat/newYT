@@ -6,7 +6,7 @@
 	.directive("inputDirective", function(){
 		return{
 			restrict: "E",
-			templateUrl: "app/components/YouTubeApp//input/input.html"
+			templateUrl: "app/components/YouTubeApp/input/inputTemplate.html"
 		};
 	})
 

@@ -9,11 +9,11 @@
                 restrict: "A",
                 link: function($scope, element){
                     $scope.$on("loader_show", function () {
-                        return element.addClass("spinner");
+                        return element.removeClass('spinner');   
                         
                     });
                     $scope.$on("loader_hide", function () {
-                        return element.removeClass('spinner');
+                        return element.addClass("spinner");
                     });
                 }
             }

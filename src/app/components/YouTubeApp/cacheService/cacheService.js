@@ -9,7 +9,7 @@
         var vm = this;
         var obj = {};
         
-        vm.getVideos = getVideos;
+        vm.getCachedData = getCachedData;
         vm.saveVideos = saveVideos;
         vm.removeData = removeData;
         
@@ -17,7 +17,7 @@
             obj[key] = data;
         }
 
-        function getVideos(key) {
+        function getCachedData(key) {
             return obj[key] || [];
         }
 

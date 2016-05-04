@@ -10,6 +10,7 @@
             restrict: 'E',
             templateUrl: 'app/components/YouTubeApp/showResults/showResults.html'
             };
+
     }
 
 })();

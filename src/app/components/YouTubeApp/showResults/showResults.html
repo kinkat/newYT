@@ -1,16 +1,24 @@
-          <div class="row jumbotron" infinite-scroll="main.getMoreData()" infinite-scroll-disabled='main.busy'> 
+<div class="row jumbotron" infinite-scroll="main.getMoreData()" infinite-scroll-disabled='main.busy'> 
+  <div >
+    <div class="col-md-4"
+        ng-repeat="video in main.responseArray">
+      <div  class="vid-container">
+          <div class="thumb">
+              <img ng-class="{selectedVideo: main.yt.videoid == (video.contentDetails.videoId || video.id.videoId)}" ng-click="main.playClickedVideo(video)" ng-src="{{main.trustTitle(video.snippet.thumbnails.medium.url)}}">
+          </div>
+          <div class="desc">
+            {{main.trustTitle(video.snippet.title)}}
+          </div> 
 
-<div >
-  <div class="col-md-4"
-      ng-repeat="video in main.responseArray">
-    <div  class="vid-container">
-        <div class="thumb">
-            <img ng-class="{selectedVideo: main.yt.videoid == video.contentDetails.videoId}"  ng-click="main.playClickedVideo(video)" ng-src="{{main.trustTitle(video.snippet.thumbnails.medium.url)}}">
-        </div>
-        <div class="desc">
-          {{main.trustTitle(video.snippet.title)}}
-        </div>
-    </div> 
+<!--           <div ng-if="main.yt.videoid == (video.contentDetails.videoId || video.id.videoId)">
+            <div class="row">
+            <div  class="col-md-12" >
+              <youtube-player-container></youtube-player-container>
+            </div>
+          </div>
+          </div> -->
+      </div> 
+    </div>
+
   </div>
 </div>
-      </div>
