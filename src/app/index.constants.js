@@ -5,6 +5,7 @@
   angular
     .module('newYt')
     .constant('malarkey', malarkey)
+    .constant('YTBASE', 'https://newyoutube.firebaseio.com/')
     .constant('moment', moment);
 
 })();

@@ -11,7 +11,8 @@
 		var objYT = {
 			inputSearch: inputSearch,
 			getVideosFromChannel: getVideosFromChannel,
-            getMySubscriptions: getMySubscriptions
+            getMySubscriptions: getMySubscriptions,
+            getVideoDuration:getVideoDuration
 		};
 		return objYT ;
 
@@ -20,7 +21,7 @@
             var defere = $q.defer();
             if(query === ''){
                 defere.reject();
-            } else {            
+            } else {
                 var request = gapi.client.youtube.search.list({
                         part: "snippet",
                         q: query,
@@ -33,7 +34,7 @@
                 });
             }
             return defere.promise;
-	
+
 		}
 
         function getMySubscriptions(){
@@ -74,11 +75,27 @@
                     pageToken: pageToken
                     });
                     requestToExtractVideos.execute(function(videosFromChannel){
+                      console.log(videosFromChannel);
+
                         defered.resolve(videosFromChannel);
                     });
                 }
             });
             return defered.promise;
+        }
+
+        function getVideoDuration(clickedVideoId){
+          var videoId = clickedVideoId;
+
+          var requestToExtractVideos = gapi.client.youtube.videos.list({
+              part: "contentDetails",
+              id: "9bZkp7q19f0"
+              });
+
+          requestToExtractVideos.execute(function(videosFromChannel){
+                      console.log(videosFromChannel.items[0].contentDetails.duration);
+                    });
+
         }
 
 	}

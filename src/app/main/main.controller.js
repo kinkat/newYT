@@ -6,10 +6,10 @@
         .module('newYt')
         .controller('MainController', MainController);
 
-        MainController.$inject = ['YouTubeFactory', 'toastr', '$sce', '$q', 'AuthService', '$anchorScroll', '$log', '$window','$routeParams','$location','cacheService','$scope','httpInterceptor'];
+        MainController.$inject = ['YouTubeFactory', 'toastr', '$sce', '$q', 'AuthService', '$anchorScroll', '$log', '$window','$routeParams','$location','cacheService','$scope','httpInterceptor', '$cookies', '$localStorage'];
 
   /** @ngInject */
-    function MainController(YouTubeFactory, toastr, $sce, $q, AuthService, $anchorScroll, $log, $window, $routeParams, $location, cacheService) {
+    function MainController(YouTubeFactory, toastr, $sce, $q, AuthService, $anchorScroll, $log, $window, $routeParams, $location, cacheService, $cookies, $localStorage) {
         var vm = this;
         vm.awesomeThings = [];
         vm.classAnimation = "";
@@ -41,6 +41,12 @@
         };
         vm.nextPageToken = '';
         vm.prevPageToken  = '';
+
+        vm.addClickedVideo = addClickedVideo;
+        vm.$storage = $localStorage;
+        console.log(vm.$storage);
+        vm.contentDetails;
+
         init();
 
         function init () {
@@ -67,7 +73,7 @@
                 default:
                     break;
             }
-       
+
         }
 
         function search(){
@@ -103,7 +109,7 @@
                     promise = YouTubeFactory.inputSearch(query, vm.nextPageToken);
                     break;
                 case 'subscriptions':
-                    promise = YouTubeFactory.getVideosFromChannel(query, vm.nextPageToken);            
+                    promise = YouTubeFactory.getVideosFromChannel(query, vm.nextPageToken);
                     break;
                 default:
                     break;
@@ -122,13 +128,13 @@
             })
             .then(function(){
                 vm.busy = false;
-            });   
+            });
 
         }
 
         function showMySubscription() {
             vm.showChannels = true;
-            
+
             if(!vm.subscriptionsArray.length){
                 YouTubeFactory.getMySubscriptions()
                     .then(function(data){
@@ -157,7 +163,6 @@
 
             YouTubeFactory.getVideosFromChannel(channelTitle)
                 .then(function(data){
-                    console.log('channel',data.items);
                     vm.responseArray = data.items;
                     vm.nextPageToken = data.nextPageToken;
                     cacheService.saveVideos('nextPage', data.nextPageToken);
@@ -187,12 +192,25 @@
             afterAuthorization(defered.promise);
         }
 
-       
+
         function playClickedVideo(clickedVideo) {
-            vm.yt.videoid = extractVideoId(clickedVideo);
-            vm.showPlayer = true;
+
+          vm.yt.videoid = extractVideoId(clickedVideo);
+
+          console.log(vm.yt.videoid);
+
+          vm.showPlayer = true;
+          var response = YouTubeFactory.getVideoDuration("9bZkp7q19f0");
+          console.log('dziala', response);
             // $anchorScroll();
         }
+
+        function addClickedVideo(clickedVideo) {
+            vm.yt.videoid = extractVideoId(clickedVideo);
+            console.log(YouTubeFactory.getVideoDuration(vm.yt.videoid));
+            console.log(vm.contentDetails);
+
+         }
 
         function trustSrc(src) {
             var link = 'https://www.youtube.com/embed/' + src;

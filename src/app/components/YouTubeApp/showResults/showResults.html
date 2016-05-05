@@ -1,14 +1,15 @@
-<div class="row jumbotron" infinite-scroll="main.getMoreData()" infinite-scroll-disabled='main.busy'> 
+<div class="row jumbotron" infinite-scroll="main.getMoreData()" infinite-scroll-disabled='main.busy'>
   <div >
     <div class="col-md-4"
         ng-repeat="video in main.responseArray">
       <div  class="vid-container">
-          <div class="thumb">
-              <img ng-class="{selectedVideo: main.yt.videoid == (video.contentDetails.videoId || video.id.videoId)}" ng-click="main.playClickedVideo(video)" ng-src="{{main.trustTitle(video.snippet.thumbnails.medium.url)}}">
+      <div><button class = "btn btn-primary" ng-click="main.addClickedVideo(video); $event.stopPropagation();">Add</button><div>
+          <div class="thumb"> {{video.contentDetails.videoId}}
+              <img ng-class="{selectedVideo: main.yt.videoid == (video.contentDetails.videoId || video.id.videoId)}" ng-click="main.playClickedVideo(video) ; $event.stopPropagation();" ng-src="{{main.trustTitle(video.snippet.thumbnails.medium.url)}}">
           </div>
           <div class="desc">
             {{main.trustTitle(video.snippet.title)}}
-          </div> 
+          </div>
 
 <!--           <div ng-if="main.yt.videoid == (video.contentDetails.videoId || video.id.videoId)">
             <div class="row">
@@ -17,7 +18,7 @@
             </div>
           </div>
           </div> -->
-      </div> 
+      </div>
     </div>
 
   </div>
