@@ -4,8 +4,11 @@
     "use strict";
 
     angular.module("newYt")
-    .directive("youtubePlayer", function(){
-        var player;
+    .directive("youtubePlayer", function(cacheService){
+        var player,
+            i = 0;
+
+        //console.log(myFavorite);
         return{
             restrict: "E",
             template: "<div class='embed-responsive-item' id='ytplayer'></div>",
@@ -15,6 +18,7 @@
                   videoid:  "@"
             },
             link: function(scope, element) {
+
                   player = new YT.Player(element.children()[0], {
                     playerVars: {
                       autoplay: 1,
@@ -26,6 +30,9 @@
                       showinfo: 1,
                       controls: 1
                     },
+                    events: {
+                      'onStateChange': playNextVideo
+                    },
                     height: scope.height,
                     width: scope.width,
                     videoId: scope.videoid
@@ -35,20 +42,29 @@
                     if (newValue === oldValue) {
                       return;
                     }
-
                     player.cueVideoById(scope.videoid);
-
+                    player.playVideo();
                   });
 
                   scope.$watch('height + width', function(newValue, oldValue) {
                     if (newValue === oldValue) {
                       return;
                     }
-
                     player.setSize(scope.width, scope.height);
                   });
+
+                function playNextVideo(event) {
+                    if(event.data == YT.PlayerState.ENDED){
+                        var myFavorite = cacheService.getCachedData('favorite');
+                        if(myFavorite.length > 0) {
+                        (i === myFavorite.length - 1) ? i=0 : i++;
+                            player.cueVideoById(myFavorite[i].id);
+                            player.playVideo();
+                            scope.videoid = myFavorite[i].id;
+                        }
+                    }
+                }
             }
         };
     });
-
 })();

@@ -6,10 +6,10 @@
         .module('newYt')
         .controller('MainController', MainController);
 
-        MainController.$inject = ['YouTubeFactory', 'toastr', '$sce', '$q', 'AuthService', '$anchorScroll', '$log', '$window','$routeParams','$location','cacheService','$scope','httpInterceptor', '$cookies', '$localStorage'];
+        MainController.$inject = ['YouTubeFactory', 'toastr', '$sce', '$q', 'AuthService', '$anchorScroll', '$log', '$window','$routeParams','$location','cacheService','$scope','httpInterceptor', '$cookies', '$localStorage', 'flagService'];
 
   /** @ngInject */
-    function MainController(YouTubeFactory, toastr, $sce, $q, AuthService, $anchorScroll, $log, $window, $routeParams, $location, cacheService, $cookies, $localStorage) {
+    function MainController(YouTubeFactory, toastr, $sce, $q, AuthService, $anchorScroll, $log, $window, $routeParams, $location, cacheService, $cookies, $localStorage, flagService) {
         var vm = this;
         vm.awesomeThings = [];
         vm.classAnimation = "";
@@ -49,6 +49,7 @@
         vm.allFavorite = [];
         vm.allFavoriteFromCache = [];
         vm.currentVideoTitle;
+        vm.playFavorite = playFavorite;
 
         init();
 
@@ -147,7 +148,7 @@
                     .then(function(){
                         vm.loggedUserName = AuthService.userInfo();
                     });
-            }else{
+            } else {
                 return ;
             }
         }
@@ -209,25 +210,29 @@
 
             vm.clickedVideoObj = new Object();
 
-            vm.yt.videoid = extractVideoId(clickedVideo);
+            vm.movieId = extractVideoId(clickedVideo);
             vm.clickedVideoObj.thumbnails = {};
             vm.clickedVideoObj.thumbnails.default = {};
             vm.clickedVideoObj.thumbnails.default.url = clickedVideo.snippet.thumbnails.default.url;
             vm.clickedVideoObj["title"] = clickedVideo.snippet.title;
-            vm.clickedVideoObj["id"] = vm.yt.videoid;
+            vm.clickedVideoObj["id"] = vm.movieId;
             vm.currentVideoTitle = clickedVideo.snippet.title;
             vm.allFavorite.push(vm.clickedVideoObj);
-            console.log(vm.clickedVideoObj);
 
             YouTubeFactory.getVideoDuration(vm.yt.videoid)
             .then(function(videosFromChannel){
                 return vm.clickedVideoObj["duration"] = videosFromChannel.items[0].contentDetails.duration;
             }).then(function(data){
-
                 cacheService.saveVideos('favorite', vm.allFavorite);
                 vm.allFavoriteFromCache = cacheService.getCachedData('favorite');
                 console.log(vm.allFavoriteFromCache);
             })
+        }
+
+        function playFavorite() {
+            console.log(vm.allFavoriteFromCache);
+            vm.yt.videoid = vm.allFavoriteFromCache[0].id;
+            // vm.showPlayer = true;
         }
 
         function trustSrc(src) {
