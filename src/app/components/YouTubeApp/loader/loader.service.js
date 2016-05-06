@@ -14,12 +14,10 @@
             request: function (config) {
                 numLoadings++;
                 $rootScope.$broadcast("loader_show");
-                console.log('broadcast show ');
                 return config || $q.when(config)
             },
             response: function (response) {
                 if ((--numLoadings) === 0) {
-                console.log('broadcast hide ');
 
                     $rootScope.$broadcast("loader_hide");
                 }

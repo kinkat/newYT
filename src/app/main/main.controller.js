@@ -43,9 +43,12 @@
         vm.prevPageToken  = '';
 
         vm.addClickedVideo = addClickedVideo;
-        vm.$storage = $localStorage;
-        console.log(vm.$storage);
-        vm.contentDetails;
+        vm.$localStorage = $localStorage;
+        vm.contentDetails = [];
+        vm.clickedVideoObj = {};
+        vm.allFavorite = [];
+        vm.allFavoriteFromCache = [];
+        vm.currentVideoTitle;
 
         init();
 
@@ -164,6 +167,7 @@
             YouTubeFactory.getVideosFromChannel(channelTitle)
                 .then(function(data){
                     vm.responseArray = data.items;
+                    console.log(vm.responseArray);
                     vm.nextPageToken = data.nextPageToken;
                     cacheService.saveVideos('nextPage', data.nextPageToken);
                     cacheService.saveVideos(channelTitle, data.items);
@@ -197,20 +201,34 @@
 
           vm.yt.videoid = extractVideoId(clickedVideo);
 
-          console.log(vm.yt.videoid);
-
           vm.showPlayer = true;
-          var response = YouTubeFactory.getVideoDuration("9bZkp7q19f0");
-          console.log('dziala', response);
             // $anchorScroll();
         }
 
         function addClickedVideo(clickedVideo) {
-            vm.yt.videoid = extractVideoId(clickedVideo);
-            console.log(YouTubeFactory.getVideoDuration(vm.yt.videoid));
-            console.log(vm.contentDetails);
 
-         }
+            vm.clickedVideoObj = new Object();
+
+            vm.yt.videoid = extractVideoId(clickedVideo);
+            vm.clickedVideoObj.thumbnails = {};
+            vm.clickedVideoObj.thumbnails.default = {};
+            vm.clickedVideoObj.thumbnails.default.url = clickedVideo.snippet.thumbnails.default.url;
+            vm.clickedVideoObj["title"] = clickedVideo.snippet.title;
+            vm.clickedVideoObj["id"] = vm.yt.videoid;
+            vm.currentVideoTitle = clickedVideo.snippet.title;
+            vm.allFavorite.push(vm.clickedVideoObj);
+            console.log(vm.clickedVideoObj);
+
+            YouTubeFactory.getVideoDuration(vm.yt.videoid)
+            .then(function(videosFromChannel){
+                return vm.clickedVideoObj["duration"] = videosFromChannel.items[0].contentDetails.duration;
+            }).then(function(data){
+
+                cacheService.saveVideos('favorite', vm.allFavorite);
+                vm.allFavoriteFromCache = cacheService.getCachedData('favorite');
+                console.log(vm.allFavoriteFromCache);
+            })
+        }
 
         function trustSrc(src) {
             var link = 'https://www.youtube.com/embed/' + src;
@@ -235,6 +253,7 @@
             toastr.info('Fork <a href="https://github.com/Swiip/generator-gulp-angular" target="_blank"><b>generator-gulp-angular</b></a>');
             vm.classAnimation = '';
         }
+
     }
 
 })();

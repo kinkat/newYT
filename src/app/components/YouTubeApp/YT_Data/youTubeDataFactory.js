@@ -69,7 +69,7 @@
                 }else{
                     var uploads = data.items[0].contentDetails.relatedPlaylists.uploads;
                     var requestToExtractVideos = gapi.client.youtube.playlistItems.list({
-                    part: "snippet,contentDetails",
+                    part: "snippet, contentDetails",
                     playlistId: uploads,
                     maxResults:15,
                     pageToken: pageToken
@@ -85,7 +85,8 @@
         }
 
         function getVideoDuration(clickedVideoId){
-          var videoId = clickedVideoId;
+          var videoId = clickedVideoId,
+              defered = $q.defer();
 
           var requestToExtractVideos = gapi.client.youtube.videos.list({
               part: "contentDetails",
@@ -93,9 +94,9 @@
               });
 
           requestToExtractVideos.execute(function(videosFromChannel){
-                      console.log(videosFromChannel.items[0].contentDetails.duration);
+                      defered.resolve(videosFromChannel);
                     });
-
+            return defered.promise;
         }
 
 	}
