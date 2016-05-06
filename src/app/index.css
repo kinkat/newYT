@@ -88,7 +88,7 @@ input{
 
 .list-group-item{
   height: 70px;
-} 
+}
 
 .thumb img{
   display: block;
@@ -6905,6 +6905,9 @@ button.close {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffbb1813', endColorstr='#ffe01d17', GradientType=0);
   -webkit-filter: none;
           filter: none;
+}
+#favorite {
+  margin-left: 65px;
 }
 .btn-link,
 .btn-link:hover {

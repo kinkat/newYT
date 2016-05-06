@@ -8,7 +8,6 @@
         var player,
             i = 0;
 
-        //console.log(myFavorite);
         return{
             restrict: "E",
             template: "<div class='embed-responsive-item' id='ytplayer'></div>",

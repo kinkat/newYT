@@ -6,10 +6,10 @@
         .module('newYt')
         .controller('MainController', MainController);
 
-        MainController.$inject = ['YouTubeFactory', 'toastr', '$sce', '$q', 'AuthService', '$anchorScroll', '$log', '$window','$routeParams','$location','cacheService','$scope','httpInterceptor', '$cookies', '$localStorage', 'flagService'];
+        MainController.$inject = ['YouTubeFactory', 'toastr', '$sce', '$q', 'AuthService', '$anchorScroll', '$log', '$window','$routeParams','$location','cacheService','$scope','httpInterceptor', '$cookies', '$localStorage'];
 
   /** @ngInject */
-    function MainController(YouTubeFactory, toastr, $sce, $q, AuthService, $anchorScroll, $log, $window, $routeParams, $location, cacheService, $cookies, $localStorage, flagService) {
+    function MainController(YouTubeFactory, toastr, $sce, $q, AuthService, $anchorScroll, $log, $window, $routeParams, $location, cacheService, $cookies, $localStorage) {
         var vm = this;
         vm.awesomeThings = [];
         vm.classAnimation = "";
@@ -24,7 +24,6 @@
         vm.currentChannelTitle = $routeParams.query;
 
         vm.getMoreData = getMoreData;
-
         vm.busy = true;
         vm.subscriptionsArray = [];
         vm.getChannelVideos = getChannelVideos;
@@ -50,6 +49,12 @@
         vm.allFavoriteFromCache = [];
         vm.currentVideoTitle;
         vm.playFavorite = playFavorite;
+        vm.getPlaylistDuration = getPlaylistDuration;
+        vm.convertDurationToSeconds = convertDurationToSeconds;
+        vm.time;
+        vm.totalseconds;
+        vm.videosDuration = 0;
+
 
         init();
 
@@ -219,9 +224,13 @@
             vm.currentVideoTitle = clickedVideo.snippet.title;
             vm.allFavorite.push(vm.clickedVideoObj);
 
-            YouTubeFactory.getVideoDuration(vm.yt.videoid)
+            YouTubeFactory.getVideoDuration(vm.movieId)
             .then(function(videosFromChannel){
-                return vm.clickedVideoObj["duration"] = videosFromChannel.items[0].contentDetails.duration;
+                vm.time = videosFromChannel.items[0].contentDetails.duration;
+                var converted = convertDurationToSeconds(vm.time);
+
+                return vm.clickedVideoObj["duration"] = converted;
+
             }).then(function(data){
                 cacheService.saveVideos('favorite', vm.allFavorite);
                 vm.allFavoriteFromCache = cacheService.getCachedData('favorite');
@@ -229,9 +238,35 @@
             })
         }
 
+        function getPlaylistDuration(videos) {
+            angular.forEach(videos, function(value, key){
+                vm.videosDuration = vm.videosDuration + value.duration;
+             })
+        }
+
+        function convertDurationToSeconds(input) {
+
+            var reptms = /^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/;
+            var hours = 0, minutes = 0, seconds = 0, totalseconds;
+
+            if (reptms.test(input)) {
+                var matches = reptms.exec(input);
+                if (matches[1]) hours = Number(matches[1]);
+                if (matches[2]) minutes = Number(matches[2]);
+                if (matches[3]) seconds = Number(matches[3]);
+                vm.totalseconds = hours * 3600  + minutes * 60 + seconds;
+            }
+
+        return (vm.totalseconds);
+
+        }
+
+
         function playFavorite() {
             console.log(vm.allFavoriteFromCache);
             vm.yt.videoid = vm.allFavoriteFromCache[0].id;
+            getPlaylistDuration(vm.allFavoriteFromCache);
+
             // vm.showPlayer = true;
         }
 

@@ -90,7 +90,7 @@
 
           var requestToExtractVideos = gapi.client.youtube.videos.list({
               part: "contentDetails",
-              id: "9bZkp7q19f0"
+              id: videoId
               });
 
           requestToExtractVideos.execute(function(videosFromChannel){
