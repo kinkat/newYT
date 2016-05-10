@@ -1,12 +1,18 @@
-(function(){
+ (function () {
     "use strict";
 
     angular.module("newYt")
-    .directive("playlistDirective", function(){
-        return{
-            restrict: "E",
-            templateUrl: "app/components/YouTubeApp/playlist/playlist.html"
+        .directive("playlistsDirective", function () {
+        return {
+                replace: true,
+                restrict: "E",
+                templateUrl: "app/components/YouTubeApp/playlist/playlist.html",
+                scope:{
+                    test: "=",
+                    playlists: "="
+                }
+
         };
-    })
+    });
 
 })();

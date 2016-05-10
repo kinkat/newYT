@@ -1,5 +1,10 @@
 <div>
-    <p>FAVORITE</p> <p> DURATION: {{main.videosDuration}} </p>
+    <p>FAVORITE. Press button to play</p>
     <button class = "btn btn-danger" ng-click="main.playFavorite()">PLAY</button>
+      <playlists-item
+        ng-repeat="playlist in playlists"
+        playlist="playlist"
+        class='list-group-item'>
+    </playlists-item>
 
 </div>

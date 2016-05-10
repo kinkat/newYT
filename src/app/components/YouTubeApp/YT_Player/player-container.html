@@ -1,6 +1,8 @@
 <div class="row" >
+    <div ng-if='youtubeContainerCtrl.currentTime'>
+        <p> Playlist duration {{ youtubeContainerCtrl.totalTime }} </p>
+    </div>
     <div class="jumbotron" ng-show="main.yt.videoid" ng-if="youtubeContainerCtrl.apiReady">
-   <youtube-player class="embed-responsive embed-responsive-16by9" videoid="{{main.yt.videoid}}" ></youtube-player>
-    <br>
+        <youtube-player class="embed-responsive embed-responsive-16by9" videoid="{{main.yt.videoid}}" ></youtube-player><br>
     </div>
 </div>

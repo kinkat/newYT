@@ -93,8 +93,8 @@
               id: videoId
               });
 
-          requestToExtractVideos.execute(function(videosFromChannel){
-                      defered.resolve(videosFromChannel);
+          requestToExtractVideos.execute(function(clickedVideo){
+                      defered.resolve(clickedVideo);
                     });
             return defered.promise;
         }

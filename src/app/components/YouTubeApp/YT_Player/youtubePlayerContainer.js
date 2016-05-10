@@ -19,6 +19,8 @@
         function youtubeContainerController(){
             var vm = this;
             vm.apiReady = false;
+            vm.currentTime;
+            vm.totalTime = 0;
 
             ytPlayerAPI.onReady()
                 .then(function(){

@@ -6,10 +6,11 @@
         .module('newYt')
         .controller('MainController', MainController);
 
-        MainController.$inject = ['YouTubeFactory', 'toastr', '$sce', '$q', 'AuthService', '$anchorScroll', '$log', '$window','$routeParams','$location','cacheService','$scope','httpInterceptor', '$cookies', '$localStorage'];
+        MainController.$inject = ['YouTubeFactory', 'toastr', '$sce', '$q', 'AuthService', '$anchorScroll',
+        '$log', '$window','$routeParams','$location','cacheService','$scope','httpInterceptor', '$cookies', 'helpersService'];
 
-  /** @ngInject */
-    function MainController(YouTubeFactory, toastr, $sce, $q, AuthService, $anchorScroll, $log, $window, $routeParams, $location, cacheService, $cookies, $localStorage) {
+    function MainController(YouTubeFactory, toastr, $sce, $q, AuthService, $anchorScroll, $log, $window, $routeParams,
+      $location, cacheService, $scope, httpInterceptor, $cookies, helpersService) {
         var vm = this;
         vm.awesomeThings = [];
         vm.classAnimation = "";
@@ -42,7 +43,7 @@
         vm.prevPageToken  = '';
 
         vm.addClickedVideo = addClickedVideo;
-        vm.$localStorage = $localStorage;
+        // vm.$localStorage = $localStorage;
         vm.contentDetails = [];
         vm.clickedVideoObj = {};
         vm.allFavorite = [];
@@ -50,7 +51,7 @@
         vm.currentVideoTitle;
         vm.playFavorite = playFavorite;
         vm.getPlaylistDuration = getPlaylistDuration;
-        vm.convertDurationToSeconds = convertDurationToSeconds;
+        // vm.convertDurationToSeconds = convertDurationToSeconds;
         vm.time;
         vm.totalseconds;
         vm.videosDuration = 0;
@@ -202,10 +203,10 @@
             afterAuthorization(defered.promise);
         }
 
-
         function playClickedVideo(clickedVideo) {
 
           vm.yt.videoid = extractVideoId(clickedVideo);
+          console.log("haha");
 
           vm.showPlayer = true;
             // $anchorScroll();
@@ -225,47 +226,27 @@
             vm.allFavorite.push(vm.clickedVideoObj);
 
             YouTubeFactory.getVideoDuration(vm.movieId)
-            .then(function(videosFromChannel){
-                vm.time = videosFromChannel.items[0].contentDetails.duration;
-                var converted = convertDurationToSeconds(vm.time);
-
+            .then(function(clickedVideo){
+                vm.time = clickedVideo.items[0].contentDetails.duration;
+                var converted = helpersService.convertDurationToSeconds(vm.time);
                 return vm.clickedVideoObj["duration"] = converted;
 
-            }).then(function(data){
+            }).then(function(){
                 cacheService.saveVideos('favorite', vm.allFavorite);
                 vm.allFavoriteFromCache = cacheService.getCachedData('favorite');
-                console.log(vm.allFavoriteFromCache);
+                getPlaylistDuration(vm.allFavoriteFromCache);
             })
         }
 
         function getPlaylistDuration(videos) {
             angular.forEach(videos, function(value, key){
                 vm.videosDuration = vm.videosDuration + value.duration;
+                cacheService.saveTotalDuration('totalDur', vm.videosDuration);
              })
         }
 
-        function convertDurationToSeconds(input) {
-
-            var reptms = /^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/;
-            var hours = 0, minutes = 0, seconds = 0, totalseconds;
-
-            if (reptms.test(input)) {
-                var matches = reptms.exec(input);
-                if (matches[1]) hours = Number(matches[1]);
-                if (matches[2]) minutes = Number(matches[2]);
-                if (matches[3]) seconds = Number(matches[3]);
-                vm.totalseconds = hours * 3600  + minutes * 60 + seconds;
-            }
-
-        return (vm.totalseconds);
-
-        }
-
-
-        function playFavorite() {
-            console.log(vm.allFavoriteFromCache);
+        function playFavorite() {debugger;
             vm.yt.videoid = vm.allFavoriteFromCache[0].id;
-            getPlaylistDuration(vm.allFavoriteFromCache);
 
             // vm.showPlayer = true;
         }
