@@ -8,7 +8,9 @@
         var player,
             i = 0,
             tempTime = {},
+            fixTime = {},
             playlistDuration,
+            fixTimeFromCache,
             currentVideoDuration;
 
         return {
@@ -66,7 +68,7 @@
                     }
                   }
 
-                  scope.$watch('videoid', function(newValue, oldValue) {
+                  scope.$watch('videoid', function (newValue, oldValue) {
                     if (newValue === oldValue) {
                         return;
                     }
@@ -74,7 +76,7 @@
                     player.playVideo();
                   });
 
-                  scope.$watch('height + width', function(newValue, oldValue) {
+                  scope.$watch('height + width', function (newValue, oldValue) {
                     if (newValue === oldValue) {
                         return;
                     }
@@ -84,18 +86,13 @@
                   function playNextVideo(event) {
                     var myFavorite = cacheService.getCachedData('favorite');
                     if (event.data == YT.PlayerState.ENDED){
-
+                        console.log(myFavorite.length, i);
                         if (myFavorite.length > 0) {
-
-                        (i === myFavorite.length - 1) ? (i=0, getTotalDuration()) : i++;
-
-                            player.cueVideoById(myFavorite[i].id);
-                            player.playVideo();
-                            scope.videoid = myFavorite[i].id;
-                            getTotalDuration();
+                        (i === myFavorite.length - 1) ? playItAllAgain() : iterateAndUpdateCounter();
+                          player.cueVideoById(myFavorite[i].id);
+                          player.playVideo();
+                          scope.videoid = myFavorite[i].id;
                         }
-
-                      tempTime.totalDur = tempTime.totalDur - currentVideoDuration;
                     }
                     if (event.data == YT.PlayerState.UNSTARTED) {
                         getTotalDuration();
@@ -105,9 +102,25 @@
                     }
                 }
 
+                function playItAllAgain() {
+                  i=0;
+                  getFixDuration();
+                  fixTimeFromCache = fixTime.fixDur;
+                  tempTime.totalDur = fixTimeFromCache;
+                }
+
+                function iterateAndUpdateCounter() {
+                  i++;
+                  tempTime.totalDur = tempTime.totalDur - currentVideoDuration;
+                }
+
                   function getTotalDuration() {
                     tempTime = cacheService.getDuration();
                     containerCtrl.totalTime = tempTime.totalDur;
+                }
+
+                  function getFixDuration() {
+                    fixTime = cacheService.getDuration();
                 }
             }
         };

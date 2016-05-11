@@ -237,6 +237,8 @@
             angular.forEach(videos, function(value, key){
                 vm.videosDuration = vm.videosDuration + value.duration;
                 cacheService.saveTotalDuration('totalDur', vm.videosDuration);
+                cacheService.saveTotalDuration('fixDur', vm.videosDuration);
+
                 console.log(vm.videosDuration);
              })
         }
