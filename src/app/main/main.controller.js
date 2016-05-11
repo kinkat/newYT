@@ -43,7 +43,6 @@
         vm.prevPageToken  = '';
 
         vm.addClickedVideo = addClickedVideo;
-        // vm.$localStorage = $localStorage;
         vm.contentDetails = [];
         vm.clickedVideoObj = {};
         vm.allFavorite = [];
@@ -51,10 +50,12 @@
         vm.currentVideoTitle;
         vm.playFavorite = playFavorite;
         vm.getPlaylistDuration = getPlaylistDuration;
-        // vm.convertDurationToSeconds = convertDurationToSeconds;
         vm.time;
         vm.totalseconds;
         vm.videosDuration = 0;
+        vm.buttonFlag = true;
+        vm.refreshPlaylist = refreshPlaylist;
+        vm.zmienna = "kinga";
 
 
         init();
@@ -174,7 +175,6 @@
             YouTubeFactory.getVideosFromChannel(channelTitle)
                 .then(function(data){
                     vm.responseArray = data.items;
-                    console.log(vm.responseArray);
                     vm.nextPageToken = data.nextPageToken;
                     cacheService.saveVideos('nextPage', data.nextPageToken);
                     cacheService.saveVideos(channelTitle, data.items);
@@ -206,7 +206,6 @@
         function playClickedVideo(clickedVideo) {
 
           vm.yt.videoid = extractVideoId(clickedVideo);
-          console.log("haha");
 
           vm.showPlayer = true;
             // $anchorScroll();
@@ -245,10 +244,21 @@
              })
         }
 
-        function playFavorite() {debugger;
-            vm.yt.videoid = vm.allFavoriteFromCache[0].id;
+        function playFavorite() {
+          if (vm.allFavoriteFromCache.length > 0) {
+              vm.buttonFlag = false;
+              vm.yt.videoid = vm.allFavoriteFromCache[0].id;
+          }
+          else {
+            toastr.info('Wybierz utwory do playlisty, klikając przycisk Add');
+          }
 
-            // vm.showPlayer = true;
+        }
+
+        function refreshPlaylist() {
+            vm.buttonFlag = true;
+            vm.allFavoriteFromCache.length = 0;
+            vm.videosDuration = 0;
         }
 
         function trustSrc(src) {

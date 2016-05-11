@@ -7,7 +7,7 @@
                 replace: true,
                 restrict: "E",
                 templateUrl: "app/components/YouTubeApp/playlist/playlist.html",
-                scope:{
+                scope: {
                     test: "=",
                     playlists: "="
                 }

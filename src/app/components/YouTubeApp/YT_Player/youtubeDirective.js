@@ -53,13 +53,13 @@
                   }
 
                   function updateTimerDisplay() {
-                    if(player.getCurrentTime) {
+                    if (player.getCurrentTime) {
                         containerCtrl.currentTime = helpersService.formatTime(player.getCurrentTime());
                     }
                   }
 
                   function updateTotalTimer() {
-                    if(player.getCurrentTime) {
+                    if (player.getCurrentTime) {
                         containerCtrl.totalTime = tempTime.totalDur - containerCtrl.currentTime;
                         containerCtrl.totalTime = helpersService.formatMinute(containerCtrl.totalTime);
                     }
@@ -82,10 +82,9 @@
 
                   function playNextVideo(event) {
                     var myFavorite = cacheService.getCachedData('favorite');
-                    if(event.data == YT.PlayerState.ENDED){
+                    if (event.data == YT.PlayerState.ENDED){
 
-
-                        if(myFavorite.length > 0) {
+                        if (myFavorite.length > 0) {
                         (i === myFavorite.length - 1) ? i=0 : i++;
                             player.cueVideoById(myFavorite[i].id);
                             player.playVideo();

@@ -2,7 +2,7 @@
   <div>
     <div class="col-md-4"
         ng-repeat="video in main.responseArray">
-        <div><button class = "btn btn-primary" id="favorite" ng-click="main.addClickedVideo(video)">Add</button><div>
+        <div><button class = "btn btn-primary" id="favorite" ng-click="main.addClickedVideo(video)" ng-show = "main.buttonFlag">Add</button><div>
       <div  class="vid-container">
           <div class="thumb">
               <img ng-class="{selectedVideo: main.yt.videoid == (video.contentDetails.videoId || video.id.videoId)}" ng-click="main.playClickedVideo(video) " ng-src="{{main.trustTitle(video.snippet.thumbnails.medium.url)}}">
