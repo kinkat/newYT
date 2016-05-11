@@ -8,7 +8,8 @@
                 templateUrl: "app/components/YouTubeApp/playlist/playlist-item.html",
 
                 scope:{
-                    subscription: "="
+
+                    playlist: "="
                 },
                 require: "^playlistsDirective"
         };

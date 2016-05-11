@@ -1,5 +1,5 @@
 <div class="row" >
-    <div ng-if='youtubeContainerCtrl.currentTime'>
+    <div ng-show='main.timerFlag'>
         <p> Playlist duration {{ youtubeContainerCtrl.totalTime }} </p>
     </div>
     <div class="jumbotron" ng-show="main.yt.videoid" ng-if="youtubeContainerCtrl.apiReady">

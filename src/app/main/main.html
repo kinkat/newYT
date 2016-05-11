@@ -13,6 +13,7 @@
           </div>
           <div class="col-md-12">
             <subscriptions-directive subscriptions="main.subscriptionsArray" test="main.currentChannelTitle"></subscriptions-directive>
+            <p>FAVORITE. Press Add button to create your playlist. Press Play button to play</p>
             <button class = "btn btn-danger" ng-click="main.playFavorite()">PLAY</button>
             <button class = "btn btn-warning" ng-click="main.refreshPlaylist()"> CLEAR PLAYLIST</button>
             <playlists-directive playlists="main.allFavoriteFromCache" test="main.currentChannelTitle"></playlists-directive>

@@ -54,8 +54,9 @@
         vm.totalseconds;
         vm.videosDuration = 0;
         vm.buttonFlag = true;
+        vm.timerFlag = false;
         vm.refreshPlaylist = refreshPlaylist;
-        vm.zmienna = "kinga";
+
 
 
         init();
@@ -247,6 +248,7 @@
         function playFavorite() {
           if (vm.allFavoriteFromCache.length > 0) {
               vm.buttonFlag = false;
+              vm.timerFlag = true;
               vm.yt.videoid = vm.allFavoriteFromCache[0].id;
           }
           else {
@@ -257,6 +259,7 @@
 
         function refreshPlaylist() {
             vm.buttonFlag = true;
+            vm.timerFlag = false;
             vm.allFavoriteFromCache.length = 0;
             vm.videosDuration = 0;
         }
