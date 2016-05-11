@@ -8,6 +8,7 @@
         var player,
             i = 0,
             tempTime = {},
+            playlistDuration,
             currentVideoDuration;
 
         return {
@@ -85,10 +86,13 @@
                     if (event.data == YT.PlayerState.ENDED){
 
                         if (myFavorite.length > 0) {
-                        (i === myFavorite.length - 1) ? i=0 : i++;
+
+                        (i === myFavorite.length - 1) ? (i=0, getTotalDuration()) : i++;
+
                             player.cueVideoById(myFavorite[i].id);
                             player.playVideo();
                             scope.videoid = myFavorite[i].id;
+                            getTotalDuration();
                         }
 
                       tempTime.totalDur = tempTime.totalDur - currentVideoDuration;

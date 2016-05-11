@@ -1,4 +1,8 @@
-<div>
+<div class = 'list-group'>
+
+    <p>FAVORITE. Press Add button to create your playlist. Press Play button to play</p>
+    <button class = "btn btn-danger" ng-click="main.playFavorite()">PLAY</button>
+    <button class = "btn btn-warning" ng-click="main.refreshPlaylist()"> CLEAR PLAYLIST</button>
     <playlists-item
         ng-repeat="playlist in playlists"
         playlist="playlist"

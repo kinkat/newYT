@@ -7,6 +7,8 @@
                 replace: true,
                 restrict: "E",
                 templateUrl: "app/components/YouTubeApp/playlist/playlist.html",
+                controller: 'MainController',
+                controllerAs: 'main',
                 scope: {
                     test: "=",
                     playlists: "="

@@ -57,8 +57,6 @@
         vm.timerFlag = false;
         vm.refreshPlaylist = refreshPlaylist;
 
-
-
         init();
 
         function init () {
@@ -207,9 +205,8 @@
         function playClickedVideo(clickedVideo) {
 
           vm.yt.videoid = extractVideoId(clickedVideo);
-
           vm.showPlayer = true;
-            // $anchorScroll();
+          refreshPlaylist();
         }
 
         function addClickedVideo(clickedVideo) {
@@ -217,9 +214,7 @@
             vm.clickedVideoObj = new Object();
 
             vm.movieId = extractVideoId(clickedVideo);
-            vm.clickedVideoObj.thumbnails = {};
-            vm.clickedVideoObj.thumbnails.default = {};
-            vm.clickedVideoObj.thumbnails.default.url = clickedVideo.snippet.thumbnails.default.url;
+            vm.clickedVideoObj["thumbnail"] = clickedVideo.snippet.thumbnails.default.url;
             vm.clickedVideoObj["title"] = clickedVideo.snippet.title;
             vm.clickedVideoObj["id"] = vm.movieId;
             vm.currentVideoTitle = clickedVideo.snippet.title;
@@ -230,11 +225,11 @@
                 vm.time = clickedVideo.items[0].contentDetails.duration;
                 var converted = helpersService.convertDurationToSeconds(vm.time);
                 return vm.clickedVideoObj["duration"] = converted;
+                console.log(vm.videosDuration);
 
             }).then(function(){
                 cacheService.saveVideos('favorite', vm.allFavorite);
                 vm.allFavoriteFromCache = cacheService.getCachedData('favorite');
-                getPlaylistDuration(vm.allFavoriteFromCache);
             })
         }
 
@@ -242,11 +237,13 @@
             angular.forEach(videos, function(value, key){
                 vm.videosDuration = vm.videosDuration + value.duration;
                 cacheService.saveTotalDuration('totalDur', vm.videosDuration);
+                console.log(vm.videosDuration);
              })
         }
 
         function playFavorite() {
           if (vm.allFavoriteFromCache.length > 0) {
+              getPlaylistDuration(vm.allFavoriteFromCache);
               vm.buttonFlag = false;
               vm.timerFlag = true;
               vm.yt.videoid = vm.allFavoriteFromCache[0].id;
@@ -274,10 +271,10 @@
         }
 
         function extractVideoId(video){
-            if(angular.isObject(video.id)){
+            if (angular.isObject(video.id)){
                 return video.id.videoId;
             }
-            if(angular.isObject(video.snippet.resourceId)){
+            if (angular.isObject(video.snippet.resourceId)){
                 return video.snippet.resourceId.videoId;
             }
             return "no_ID";
