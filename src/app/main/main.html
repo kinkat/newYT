@@ -13,8 +13,13 @@
           </div>
           <div class="col-md-12">
             <subscriptions-directive subscriptions="main.subscriptionsArray" test="main.currentChannelTitle"></subscriptions-directive>
+                <div ng-show='main.timerFlag'>
+                  <p> Playlist duration {{ youtubeContainerCtrl.totalTime }} </p>
+                </div>
+                <p>FAVORITE. Press Add button to create your playlist. Press Play button to play</p>
                 <button class = "btn btn-info" ng-show ="main.buttonFlag" ng-click="main.playFavorite()">PLAY</button>
                 <button class = "btn btn-info" ng-click="main.refreshPlaylist()"> CLEAR PLAYLIST</button>
+
             <playlists-directive playlists="main.allFavoriteFromCache" test="main.currentChannelTitle"></playlists-directive>
           </div>
         </div>
