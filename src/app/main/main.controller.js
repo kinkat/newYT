@@ -238,13 +238,14 @@
                 vm.videosDuration = vm.videosDuration + value.duration;
                 cacheService.saveTotalDuration('totalDur', vm.videosDuration);
                 cacheService.saveTotalDuration('fixDur', vm.videosDuration);
-
-                console.log(vm.videosDuration);
              })
         }
 
         function playFavorite() {
+
           if (vm.allFavoriteFromCache.length > 0) {
+              vm.allFavoriteFromCache = cacheService.getCachedData('favorite');
+              vm.videosDuration = 0;
               getPlaylistDuration(vm.allFavoriteFromCache);
               vm.buttonFlag = false;
               vm.timerFlag = true;
